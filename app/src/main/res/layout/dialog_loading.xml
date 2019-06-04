@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.bsoft.common.view.roundview.RoundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/dp_160"
+    android:layout_height="@dimen/dp_160"
+    android:gravity="center"
+    app:rv_cornerRadius="@dimen/dp_10"
+    app:rv_backgroundColor="#bb333333"
+    android:orientation="vertical">
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/loading_view"
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="@dimen/dp_80" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp_10"
+        android:gravity="center"
+        android:text="努力加载中..."
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_16" />
+
+</com.bsoft.common.view.roundview.RoundLinearLayout>

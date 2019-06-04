@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.bsoft.common.view.roundview.RoundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/dp_280"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/dp_15"
+    app:rv_backgroundColor="@android:color/white"
+    app:rv_cornerRadius="20dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_18"
+        android:gravity="center"
+        android:text="预约提醒"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="@dimen/sp_18" />
+
+    <TextView
+        android:id="@+id/pay_time_limit_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_30"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/sp_16" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <com.bsoft.common.view.roundview.RoundTextView
+            android:id="@+id/dialog_appoint_continue_tv"
+            android:layout_width="@dimen/dp_110"
+            android:layout_height="@dimen/dp_35"
+            android:gravity="center"
+            android:text="继续"
+            android:textColor="@color/main"
+            android:textSize="@dimen/sp_16"
+            app:rv_cornerRadius="@dimen/dp_3"
+            app:rv_strokeColor="@color/main"
+            app:rv_strokeWidth="@dimen/dp_1" />
+
+        <com.bsoft.common.view.roundview.RoundTextView
+            android:id="@+id/dialog_appoint_pay_tv"
+            android:layout_width="@dimen/dp_110"
+            android:layout_height="@dimen/dp_35"
+            android:layout_marginLeft="@dimen/dp_40"
+            android:gravity="center"
+            android:text="立即支付"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp_16"
+            app:rv_backgroundColor="@color/main"
+            app:rv_cornerRadius="@dimen/dp_3"
+            app:rv_strokeColor="@color/main"
+            app:rv_strokeWidth="@dimen/dp_1" />
+    </LinearLayout>
+
+</com.bsoft.common.view.roundview.RoundLinearLayout>

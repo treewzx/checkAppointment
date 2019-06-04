@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">CheckAppointment</string>
+    <string name="request_no"><Data><![CDATA[申请单号<font color="#000000">&#160;&#160;&#160;&#160;%1$s</font>]]></Data></string>
+    <string name="patient_info"><Data><![CDATA[<font color="#000000">%1$s</font><font color="#bbbbbb"><small>&#160;%2$s</small></font>]]></Data></string>
+    <string name="appointment_item"><Data><![CDATA[预约项目<font color="#000000">&#160;&#160;&#160;&#160;%1$s</font>]]></Data></string>
+    <string name="appointment_time"><Data><![CDATA[预约时间<font color="#000000">&#160;&#160;&#160;&#160;%1$s</font>]]></Data></string>
+    <string name="check_address"><Data><![CDATA[检查地点<font color="#000000">&#160;&#160;&#160;&#160;%1$s</font>]]></Data></string>
+    <string name="notes"><Data><![CDATA[注意事项<font color="#000000">&#160;&#160;&#160;&#160;%1$s</font>]]></Data></string>
+    <string name="pay_time_limit">当前申请单未收费，请在预约完成后%1$s分钟内完成支付，否则已预约号源会自动回收，给您带来不便敬请谅解.</string>
+    <string name="sign_sequence_no"><Data><![CDATA[<font color="#000000">我的号码</font><font color="#ff6d00"><big>&#160;%1$s</big></font>]]></Data></string>
+    <string name="sign_current_no"><Data><![CDATA[<font color="#000000">当前号码</font><font color="#2ABC6D"><big>&#160;%1$s</big></font>]]></Data></string>
+</resources>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.bsoft.common.view.roundview.RoundLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/appointment_time_rll"
+    android:layout_width="@dimen/dp_102"
+    android:layout_height="@dimen/dp_85"
+    android:gravity="center"
+    app:rv_cornerRadius="@dimen/dp_5"
+    app:rv_strokeColor="@color/main"
+    android:layout_marginBottom="@dimen/dp_10"
+    app:rv_strokeWidth="@dimen/dp_1"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/num_count_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3/17"
+        android:textStyle="bold"
+        android:textColor="@color/main"
+        android:textSize="@dimen/sp_18" />
+
+    <TextView
+        android:id="@+id/time_tv"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="08:00-09:00"
+        android:textSize="@dimen/sp_14" />
+    <TextView
+        android:id="@+id/num_state_tv"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="有号"
+        android:textSize="@dimen/sp_13" />
+
+</com.bsoft.common.view.roundview.RoundLinearLayout>
+
+
+

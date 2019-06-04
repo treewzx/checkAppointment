@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/dp_35">
+
+    <ImageView
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="@dimen/dp_80"
+        android:src="@color/main"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_50"
+        android:text="恭喜！预约成功"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/sp_30" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_40"
+        android:text="1.为保证顺利就诊，请在约定就诊时间前30分钟到院内取号；超过约定就诊时间30分钟后，如未办理取号，本次预约将自动作废。\n2.无医院就诊卡的患者，请在预约日当天提前到医院窗口进行办卡取号。"
+        android:textSize="@dimen/sp_15" />
+
+    <com.bsoft.common.view.roundview.RoundTextView
+        android:layout_marginTop="@dimen/dp_50"
+        android:layout_width="@dimen/dp_280"
+        android:layout_height="@dimen/dp_40"
+        android:gravity="center"
+        android:text="查看预约记录"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_18"
+        app:rv_backgroundColor="@color/main"
+        app:rv_cornerRadius="5"
+        app:rv_isRippleEnable="true" />
+
+</LinearLayout>

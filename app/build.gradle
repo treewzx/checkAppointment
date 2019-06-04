@@ -1,0 +1,69 @@
+apply plugin: 'com.android.application'
+/*apply plugin: 'com.android.library'
+apply plugin: 'com.jakewharton.butterknife'
+apply plugin: 'maven'*/
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        /* applicationId "com.bsoft.checkappointment"*/
+        minSdkVersion 19
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
+    }
+    //lambda表达式用
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //butterknife
+    api 'com.jakewharton:butterknife:8.4.0'
+    api 'org.greenrobot:eventbus:3.1.1'
+
+    // api("com.squareup.okhttp3:okhttp:3.13.1")
+
+    api 'com.trello.rxlifecycle2:rxlifecycle-android:2.2.1'
+    api 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+    api 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.0'
+    api 'com.alibaba:fastjson:1.1.71.android'
+
+    // api 'com.http.wrapper:httpsender:1.1.0'
+    //annotationProcessor 'com.http.wrapper.httpsender:compiler:1.0.4'
+    implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    api "com.android.support:appcompat-v7:27.1.1"
+    api "com.android.support:cardview-v7:27.1.1"
+    //recyclerview
+    api "com.android.support:recyclerview-v7:27.1.1"
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.zxing:core:3.3.0'
+    //LoadingView
+    api 'com.wang.avi:library:2.1.3'
+
+}
+
+/*uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: rootProject.ext.nexus.MAVEN_REPO_RELEASE_URL) {
+            authentication(userName:"deployment", password: "scbsoftdeploybnm")
+        }
+        pom.version = rootProject.ext.nexus.VERSION_NAME
+        pom.artifactId =rootProject.ext.nexus.ARTIFACT_ID
+        pom.groupId = rootProject.ext.nexus.GROUP_ID
+        pom.packaging = rootProject.ext.nexus.TYPE
+    }
+}*/

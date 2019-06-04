@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="@dimen/dp_160"
+        android:layout_height="@dimen/dp_160"
+        android:src="@drawable/base_bg_error" />
+
+    <TextView
+        android:id="@+id/msg_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_30"
+        android:text="加载失败"
+        android:textSize="@dimen/sp_14" />
+
+    <com.bsoft.common.view.roundview.RoundTextView
+        android:id="@+id/refresh_tv"
+        android:layout_width="@dimen/dp_120"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_30"
+        android:gravity="center"
+        android:text="点击刷新"
+        android:textColor="@color/main"
+        android:textSize="@dimen/sp_14"
+        app:rv_cornerRadius="@dimen/dp_4"
+        app:rv_strokeColor="@color/main"
+        app:rv_strokeWidth="@dimen/dp_1" />
+</LinearLayout>

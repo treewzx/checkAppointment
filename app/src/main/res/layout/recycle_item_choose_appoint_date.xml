@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/dp_40"
+    android:layout_height="@dimen/dp_60"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/week_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:text="今日"
+        android:textSize="@dimen/sp_12" />
+
+    <TextView
+        android:id="@+id/date_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_weight="1"
+        android:text="26"
+        android:textSize="@dimen/sp_18" />
+
+    <com.bsoft.common.view.roundview.RoundTextView
+        android:id="@+id/indicator_view"
+        android:layout_width="@dimen/dp_16"
+        android:layout_height="@dimen/dp_3"
+        android:layout_marginTop="@dimen/dp_5"
+        app:rv_backgroundColor="@color/main"
+        app:rv_cornerRadius="@dimen/dp_2" />
+</LinearLayout>
+
+
+
