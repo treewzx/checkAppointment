@@ -1,6 +1,8 @@
 package com.bsoft.checkappointment.outpatients.fragment;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PathEffect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +18,8 @@ import com.bsoft.baselib.http.exception.ApiException;
 import com.bsoft.baselib.utils.RxUtil;
 import com.bsoft.checkappointment.MyApplication;
 import com.bsoft.checkappointment.R;
+import com.bsoft.checkappointment.common.CancelAppointActivity;
+import com.bsoft.checkappointment.common.ChooseAppointTimeActivity;
 import com.bsoft.checkappointment.model.PatientAppointmentVo;
 import com.bsoft.checkappointment.model.SignQueueVo;
 import com.bsoft.checkappointment.model.SystemConfigVo;
@@ -44,6 +48,7 @@ import io.reactivex.functions.Function;
  */
 public class AppointedFragment extends BaseLazyLoadFragment {
     private List<PatientAppointmentVo> mList = new ArrayList<>();
+    private PatientAppointmentVo mSelectedAppointVo;
     private SparseArray<SignQueueVo> mSignQueueVoArray = new SparseArray<>();
     private CommonAdapter<PatientAppointmentVo> mAdapter;
     private String mSignDistanceLimit;
@@ -98,7 +103,8 @@ public class AppointedFragment extends BaseLazyLoadFragment {
                     }
 
                     holder.setOnClickListener(R.id.appointment_cancel_tv, v -> {
-
+                        mSelectedAppointVo = mList.get(holder.getAdapterPosition());
+                        gotoCancelAppointment();
                     }).setOnClickListener(R.id.appointment_sign_tv, v -> {
                         long timeGapMin = DateUtil.getTimeGap(patientAppointmentVo.getCheckStartTime()) / (1000 * 60);
                         if (timeGapMin < Long.parseLong(mSignTimeLimit)) {
@@ -194,6 +200,13 @@ public class AppointedFragment extends BaseLazyLoadFragment {
                         mAdapter.notifyDataSetChanged();
                     }
                 });
+    }
+
+    private void gotoCancelAppointment() {
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), CancelAppointActivity.class);
+        intent.putExtra("appointmentItem", mSelectedAppointVo);
+        startActivity(intent);
     }
 
 }
