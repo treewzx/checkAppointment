@@ -9,4 +9,5 @@
     <string name="pay_time_limit">当前申请单未收费，请在预约完成后%1$s分钟内完成支付，否则已预约号源会自动回收，给您带来不便敬请谅解.</string>
     <string name="sign_sequence_no"><Data><![CDATA[<font color="#000000">我的号码</font><font color="#ff6d00"><big>&#160;%1$s</big></font>]]></Data></string>
     <string name="sign_current_no"><Data><![CDATA[<font color="#000000">当前号码</font><font color="#2ABC6D"><big>&#160;%1$s</big></font>]]></Data></string>
+    <string name="dialog_cancel_appointment_note">同一项目允许取消次数为%1$s次，当前做第%2$s次取消，取消预约不可退回，是否确认取消预约？.</string>
 </resources>

@@ -18,6 +18,7 @@
         android:textSize="@dimen/sp_18" />
 
     <TextView
+        android:id="@+id/dialog_cancel_appointment_note_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp_30"
@@ -31,7 +32,7 @@
         android:gravity="center">
 
         <com.bsoft.common.view.roundview.RoundTextView
-            android:id="@+id/dialog_appoint_continue_tv"
+            android:id="@+id/dialog_appoint_back_tv"
             android:layout_width="@dimen/dp_110"
             android:layout_height="@dimen/dp_35"
             android:gravity="center"
@@ -43,7 +44,7 @@
             app:rv_strokeWidth="@dimen/dp_1" />
 
         <com.bsoft.common.view.roundview.RoundTextView
-            android:id="@+id/dialog_appoint_pay_tv"
+            android:id="@+id/dialog_appoint_continue_tv"
             android:layout_width="@dimen/dp_110"
             android:layout_height="@dimen/dp_35"
             android:layout_marginLeft="@dimen/dp_40"

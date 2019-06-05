@@ -83,7 +83,7 @@ public class ChooseAppointTimeActivity extends BaseActivity {
                     intent.putExtra("appointmentItem", mAppointVo)
                             .putExtra("appointTime", mSelectedAppointTimeVo);
                     startActivity(intent);
-                }else {
+                } else {
                     ToastUtil.showShort("请选择预约时间");
                 }
             }
@@ -122,6 +122,7 @@ public class ChooseAppointTimeActivity extends BaseActivity {
         mTimeAdapter = new CommonAdapter<AppointTimeVo>(this, R.layout.recycle_item_choose_appoint_time, mTimeList) {
             @Override
             protected void convert(ViewHolder holder, AppointTimeVo appointTimeVo, int position) {
+                //设置布局内容
                 String appointTime = new StringBuilder()
                         .append(DateUtil.getHM(appointTimeVo.getNumberStartTime()))
                         .append("-")
@@ -135,19 +136,24 @@ public class ChooseAppointTimeActivity extends BaseActivity {
                 holder.setText(R.id.time_tv, appointTime)
                         .setText(R.id.num_state_tv, appointTimeVo.getRemainNumberCount() > 0 ? "有号" : "约满")
                         .setText(R.id.num_count_tv, numCount);
+
+                //设置布局背景颜色等样式
+                RoundViewDelegate roundViewDelegate = ((RoundLinearLayout) holder.getView(R.id.appointment_time_rll)).getDelegate();
+                roundViewDelegate.setStrokeColor(fetchColor(R.color.main));
                 if (mSelectTimePosition == position) {
                     holder.setTextColorRes(android.R.color.white, R.id.time_tv, R.id.num_state_tv, R.id.num_count_tv);
-                    ((RoundLinearLayout) holder.getView(R.id.appointment_time_rll)).getDelegate().setBackgroundColor(fetchColor(R.color.main));
+                    roundViewDelegate.setBackgroundColor(fetchColor(R.color.main));
                 } else {
                     holder.setTextColorRes(android.R.color.black, R.id.time_tv, R.id.num_state_tv)
                             .setTextColorRes(R.id.num_count_tv, R.color.main);
-                    ((RoundLinearLayout) holder.getView(R.id.appointment_time_rll)).getDelegate().setBackgroundColor(fetchColor(R.color.white));
+                    roundViewDelegate.setBackgroundColor(fetchColor(R.color.white));
                 }
                 if (appointTimeVo.getRemainNumberCount() == 0) {
-                    RoundViewDelegate roundViewDelegate = ((RoundLinearLayout) holder.getView(R.id.appointment_time_rll)).getDelegate();
                     roundViewDelegate.setStrokeColor(fetchColor(android.R.color.darker_gray));
                     holder.setTextColorRes(android.R.color.darker_gray, R.id.time_tv, R.id.num_state_tv, R.id.num_count_tv);
                 }
+
+                //设置点击事件
                 holder.getConvertView().setOnClickListener(v -> {
                     if (mTimeList.get(holder.getAdapterPosition()).getRemainNumberCount() != 0) {
                         mSelectTimePosition = holder.getAdapterPosition();

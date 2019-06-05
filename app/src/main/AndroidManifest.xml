@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.bsoft.checkappointment">
-<uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -31,6 +32,9 @@
             android:theme="@style/MyAppTheme" />
         <activity
             android:name=".common.ChooseAppointTimeActivity"
+            android:theme="@style/MyAppTheme" />
+        <activity
+            android:name=".common.CancelAppointResultActivity"
             android:theme="@style/MyAppTheme" />
     </application>
 

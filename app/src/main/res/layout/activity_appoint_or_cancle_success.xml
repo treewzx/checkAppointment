@@ -10,10 +10,10 @@
     <ImageView
         android:layout_width="@dimen/dp_80"
         android:layout_height="@dimen/dp_80"
-        android:src="@color/main"
-        />
+        android:src="@drawable/outpatients_appoint_icon" />
 
     <TextView
+        android:id="@+id/appoint_or_cancle_success_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_50"
@@ -29,15 +29,15 @@
         android:textSize="@dimen/sp_15" />
 
     <com.bsoft.common.view.roundview.RoundTextView
-        android:layout_marginTop="@dimen/dp_50"
+        android:id="@+id/goto_appointment_rtv"
         android:layout_width="@dimen/dp_280"
-        android:layout_height="@dimen/dp_40"
+        android:layout_height="@dimen/dp_50"
+        android:layout_marginTop="@dimen/dp_60"
         android:gravity="center"
         android:text="查看预约记录"
         android:textColor="@color/white"
-        android:textSize="@dimen/sp_18"
+        android:textSize="@dimen/sp_20"
         app:rv_backgroundColor="@color/main"
-        app:rv_cornerRadius="5"
-        app:rv_isRippleEnable="true" />
+        app:rv_cornerRadius="@dimen/dp_5" />
 
 </LinearLayout>

@@ -31,12 +31,15 @@ import com.bsoft.common.http.ResultConverter;
 import com.bsoft.common.utils.DateUtil;
 import com.bsoft.common.utils.ToastUtil;
 import com.bsoft.common.utils.ZXingUtil;
+import com.bsoft.common.view.dialog.AlertDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Function5;
 
 
 /**
@@ -53,6 +56,8 @@ public class AppointedFragment extends BaseLazyLoadFragment {
     private CommonAdapter<PatientAppointmentVo> mAdapter;
     private String mSignDistanceLimit;
     private String mSignTimeLimit;
+    private String mChangeAppointTimeLimit;  //改约的提前时间限制
+    private String mCancelAppointTimeLimit; //提前取消的时间限制
 
     @Override
     public int getContentViewId(@Nullable Bundle savedInstanceState) {
@@ -80,7 +85,7 @@ public class AppointedFragment extends BaseLazyLoadFragment {
                     Spanned appointmentTime = Html.fromHtml(String.format((getString(R.string.appointment_time)), checkTime));
                     Spanned checkAdress = Html.fromHtml(String.format((getString(R.string.check_address)), patientAppointmentVo.getCheckAddress()));
                     Spanned noteStr = Html.fromHtml(String.format((getString(R.string.notes)), patientAppointmentVo.getMattersNeedingAttention()));
-                    //签到之后所有按键都不显示，需要调用排队的接口
+
                     holder.setImageBitmap(R.id.check_request_no_iv, requestNoBitmap)
                             .setText(R.id.appointment_request_no_tv, requestNo)
                             .setText(R.id.patient_info_tv, patientInfo)
@@ -88,23 +93,30 @@ public class AppointedFragment extends BaseLazyLoadFragment {
                             .setText(R.id.appointment_time_tv, appointmentTime)
                             .setText(R.id.check_address_tv, checkAdress)
                             .setText(R.id.pay_state_tv, patientAppointmentVo.getFeeStatus() == 1 ? "已支付" : "未支付")
-                            .setVisible(R.id.appointment_pay_tv, patientAppointmentVo.getFeeStatus() == 0 || patientAppointmentVo.getSignInSign() == 0)
-                            .setVisible(R.id.appointment_sign_tv, patientAppointmentVo.getSignInSign() == 0)
-                            .setVisible(R.id.appointment_change_tv, patientAppointmentVo.getSignInSign() == 0)
-                            .setVisible(R.id.appointment_cancel_tv, patientAppointmentVo.getSignInSign() == 0)
                             .setVisible(R.id.sign_sequence_no_ll, patientAppointmentVo.getSignInSign() == 1)
                             .setText(R.id.note_tv, noteStr);
+
+                    //根据是否签到判断显示的内容， 签到之后所有按键都不显示
                     if (patientAppointmentVo.getSignInSign() == 1 && mSignQueueVoArray.get(position).getSerialNumber() != null) {
                         Spanned currentNo = Html.fromHtml(String.format((getString(R.string.sign_current_no)), mSignQueueVoArray.get(position).getCurrentNumber()));
                         Spanned mineNo = Html.fromHtml(String.format((getString(R.string.sign_sequence_no)), mSignQueueVoArray.get(position).getSerialNumber()));
                         holder.setText(R.id.sign_current_no_tv, currentNo)
                                 .setText(R.id.sign_sequence_no_tv, mineNo)
                                 .setVisible(R.id.buttons, false);
+                    } else {
+                        long timeGapHour = DateUtil.getTimeGap(patientAppointmentVo.getCheckStartTime()) / (1000 * 60 * 60);
+                        holder.setVisible(R.id.appointment_pay_tv, patientAppointmentVo.getFeeStatus() == 0)
+                                .setVisible(R.id.appointment_sign_tv, true)
+                                .setVisible(R.id.appointment_change_tv, true)
+                                .setVisible(R.id.appointment_cancel_tv, true);
                     }
-
+                    //点击事件
                     holder.setOnClickListener(R.id.appointment_cancel_tv, v -> {
+                        //如果在规定的可取消时间范围内则弹出取消对话框，显示取消的次数限制，否则提示用户不可取消
+                        long timeGapHour = DateUtil.getTimeGap(patientAppointmentVo.getCheckStartTime()) / (1000 * 60 * 60);
                         mSelectedAppointVo = mList.get(holder.getAdapterPosition());
                         gotoCancelAppointment();
+                        //ToastUtil.showShort("距离检查时间小于"+mChangeAppointTimeLimit + "小时以内的预约不可取消");
                     }).setOnClickListener(R.id.appointment_sign_tv, v -> {
                         long timeGapMin = DateUtil.getTimeGap(patientAppointmentVo.getCheckStartTime()) / (1000 * 60);
                         if (timeGapMin < Long.parseLong(mSignTimeLimit)) {
@@ -123,33 +135,52 @@ public class AppointedFragment extends BaseLazyLoadFragment {
 
     @Override
     protected void loadData() {
-        HttpEnginer.newInstance()
+        //提前取消的时间
+        Observable<SystemConfigVo> cancelAppointTimeConfig = HttpEnginer.newInstance()
+                .addUrl("auth/sysParameter/getSysParameter")
+                .addParam("parameterKey", "CA_cancelReservationLeadTime")
+                .post(new ResultConverter<SystemConfigVo>() {
+                });
+        //重新预约提前时间（小时）
+        Observable<SystemConfigVo> reAppointTimeConfig = HttpEnginer.newInstance()
+                .addUrl("auth/sysParameter/getSysParameter")
+                .addParam("parameterKey", "CA_reAppointmentLeadTime")
+                .post(new ResultConverter<SystemConfigVo>() {
+                });
+        //签到提前时间（分钟）
+        Observable<SystemConfigVo> signTimeConfig = HttpEnginer.newInstance()
+                .addUrl("auth/sysParameter/getSysParameter")
+                .addParam("parameterKey", "CA_signInLeadTime")
+                .post(new ResultConverter<SystemConfigVo>() {
+                });
+        //签到定位距离(米)
+        Observable<SystemConfigVo> signDistanceConfig = HttpEnginer.newInstance()
                 .addUrl("auth/sysParameter/getSysParameter")
                 .addParam("parameterKey", "CA_appSignInDistance")
                 .post(new ResultConverter<SystemConfigVo>() {
+                });
+
+        Observable.zip(cancelAppointTimeConfig, reAppointTimeConfig, signTimeConfig, signDistanceConfig,
+                (systemConfigVo, systemConfigVo2, systemConfigVo3, systemConfigVo4) -> {
+                    //大于这个值可以进行取消操作
+                    mCancelAppointTimeLimit = systemConfigVo.getParameterValue();
+                    //大于这个值可以进行改约操作
+                    mChangeAppointTimeLimit = systemConfigVo2.getParameterValue();
+                    //时间小于mSignTimeLimit这个值，并且距离小于mSignDistanceLimit，可以进行签到
+                    mSignTimeLimit = systemConfigVo3.getParameterValue();
+                    mSignDistanceLimit = systemConfigVo4.getParameterValue();
+                    return 1;
                 })
-                .flatMap((Function<SystemConfigVo, ObservableSource<SystemConfigVo>>) systemConfigVo -> {
-                    mSignDistanceLimit = systemConfigVo.getParameterValue();
-                    Log.e("TAG", "签到距离" + mSignDistanceLimit);
-                    return HttpEnginer.newInstance()
-                            .addUrl("auth/sysParameter/getSysParameter")
-                            .addParam("parameterKey", "CA_signInLeadTime")
-                            .post(new ResultConverter<SystemConfigVo>() {
-                            });
-                })
-                .flatMap((Function<SystemConfigVo, ObservableSource<List<PatientAppointmentVo>>>) systemConfigVo -> {
-                    mSignTimeLimit = systemConfigVo.getParameterValue();
-                    Log.e("TAG", "签到时间" + mSignTimeLimit);
-                    return HttpEnginer.newInstance()
-                            .addUrl("auth/checkAppointment/getCheckAppointmentItem")
-                            .addParam("hospitalCode", MyApplication.loginUserVo.getHospitalCode())
-                            .addParam("patientType", 1)
-                            .addParam("patientIdentityCardType", 1)
-                            .addParam("patientIdentityCardNumber", "37263819980909293X")
-                            .addParam("appointmentSign", 1)
-                            .post(new ResultConverter<List<PatientAppointmentVo>>() {
-                            });
-                })
+                .flatMap((Function<Integer, ObservableSource<List<PatientAppointmentVo>>>)
+                        integer -> HttpEnginer.newInstance()
+                                .addUrl("auth/checkAppointment/getCheckAppointmentItem")
+                                .addParam("hospitalCode", MyApplication.loginUserVo.getHospitalCode())
+                                .addParam("patientType", 1)
+                                .addParam("patientIdentityCardType", 1)
+                                .addParam("patientIdentityCardNumber", "37263819980909293X")
+                                .addParam("appointmentSign", 1)
+                                .post(new ResultConverter<List<PatientAppointmentVo>>() {
+                                }))
                 .compose(RxUtil.applyLifecycleLCESchedulers(this, this))
                 .subscribe(new BaseObserver<List<PatientAppointmentVo>>() {
                     @Override
@@ -171,8 +202,6 @@ public class AppointedFragment extends BaseLazyLoadFragment {
                                 }
                             }
                             mAdapter.notifyDataSetChanged();
-
-
                         } else {
                             mLoadViewHelper.showEmpty(mOnRefreshListener);
                         }
@@ -202,11 +231,15 @@ public class AppointedFragment extends BaseLazyLoadFragment {
                 });
     }
 
+
     private void gotoCancelAppointment() {
         Intent intent = new Intent();
         intent.setClass(getActivity(), CancelAppointActivity.class);
         intent.putExtra("appointmentItem", mSelectedAppointVo);
         startActivity(intent);
     }
+
+
+
 
 }
