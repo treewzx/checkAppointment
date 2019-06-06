@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.bsoft.checkappointment.R;
 
 
-
 public class AlertDialog extends Dialog implements DialogInterface {
     private AlertController mAlert;
 
@@ -35,9 +34,10 @@ public class AlertDialog extends Dialog implements DialogInterface {
         mAlert.setOnClickListener(viewId, listener);
     }
 
+
     public static class Builder {
         private AlertController.AlertParams P;
-        private  AlertDialog dialog;
+        private AlertDialog dialog;
 
         public Builder(Context context) {
             this(context, R.style.DialogTheme);
@@ -185,7 +185,7 @@ public class AlertDialog extends Dialog implements DialogInterface {
          * @param styleAnimations
          * @return
          */
-        public Builder setAnimations( int styleAnimations) {
+        public Builder setAnimations(int styleAnimations) {
             P.mAnimations = styleAnimations;
             return this;
         }
@@ -219,8 +219,8 @@ public class AlertDialog extends Dialog implements DialogInterface {
             return dialog;
         }
 
-        public void dismiss(){
-            if(dialog!=null){
+        public void dismiss() {
+            if (dialog != null && dialog.isShowing()) {
                 dialog.dismiss();
             }
         }

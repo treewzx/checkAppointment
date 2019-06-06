@@ -31,10 +31,6 @@ import com.bsoft.common.view.roundview.RoundViewDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
-import io.reactivex.functions.Function;
-
 /**
  * Author by wangzhaox,
  * Email wangzhaox@bsoft.com.cn,
@@ -52,6 +48,8 @@ public class ChooseAppointTimeActivity extends BaseActivity {
     private int mSelectTimePosition = -1;
     private PatientAppointmentVo mAppointVo;
     private TextView mAppointItemTv;
+    private TextView mPreviousAppointTimeTv;
+    private boolean mIsReAppoint;
 
     @Override
     public int getContentViewId(@Nullable Bundle savedInstanceState) {
@@ -60,9 +58,23 @@ public class ChooseAppointTimeActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        initDefaultToolbar("选择号源");
-        mAppointVo = getIntent().getParcelableExtra("appointmentItem");
+        mPreviousAppointTimeTv = findViewById(R.id.previous_appointment_tv);
         mAppointItemTv = findViewById(R.id.appointment_item_tv);
+        mAppointVo = getIntent().getParcelableExtra("appointmentItem");
+        mIsReAppoint = getIntent().getBooleanExtra("isReAppoint", false);
+        if (mIsReAppoint) {
+            initDefaultToolbar("重新选号");
+            mPreviousAppointTimeTv.setVisibility(View.VISIBLE);
+            String checkTime = new StringBuilder()
+                    .append(DateUtil.getYMDHM(mAppointVo.getCheckStartTime()))
+                    .append("-")
+                    .append(DateUtil.getHM(mAppointVo.getCheckEndTime()))
+                    .toString();
+            mPreviousAppointTimeTv.setText(new StringBuilder("前次预约时间：").append(checkTime).toString());
+        } else {
+            initDefaultToolbar("选择号源");
+            mPreviousAppointTimeTv.setVisibility(View.GONE);
+        }
         mAppointItemTv.setText(mAppointVo.getCheckItemName());
 
         setClick();
@@ -79,7 +91,12 @@ public class ChooseAppointTimeActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (mSelectedAppointTimeVo != null) {
-                    Intent intent = new Intent(ChooseAppointTimeActivity.this, ConfirmAppointActivity.class);
+                    Intent intent = null;
+                    if (mIsReAppoint) {
+                        intent = new Intent(ChooseAppointTimeActivity.this, ReAppointActivity.class);
+                    } else {
+                        intent = new Intent(ChooseAppointTimeActivity.this, SubmitAppointActivity.class);
+                    }
                     intent.putExtra("appointmentItem", mAppointVo)
                             .putExtra("appointTime", mSelectedAppointTimeVo);
                     startActivity(intent);
@@ -201,7 +218,7 @@ public class ChooseAppointTimeActivity extends BaseActivity {
                 .addParam("checkRequestNumber", "343254345")
                 .addParam("checkItemCode", "MRI")
                 .addParam("checkItemName", "MRI")
-                .addParam("appointmentDate", "2019-05-24")
+                .addParam("appointmentDate", DateUtil.getYMD(selectDate))
                 .post(new ResultConverter<List<AppointTimeVo>>() {
                 })
                 .compose(RxUtil.applyLifecycleLCESchedulers(this, this))

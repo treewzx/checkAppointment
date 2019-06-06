@@ -25,7 +25,7 @@
             android:name=".outpatients.activity.OutPatientsAppointActivity"
             android:theme="@style/MyAppTheme" />
         <activity
-            android:name=".common.ConfirmAppointActivity"
+            android:name=".common.SubmitAppointActivity"
             android:theme="@style/MyAppTheme" />
         <activity
             android:name=".common.CancelAppointActivity"
@@ -34,7 +34,10 @@
             android:name=".common.ChooseAppointTimeActivity"
             android:theme="@style/MyAppTheme" />
         <activity
-            android:name=".common.CancelAppointResultActivity"
+            android:name=".common.AppointOrCancleResultActivity"
+            android:theme="@style/MyAppTheme" />
+        <activity
+            android:name=".common.ReAppointActivity"
             android:theme="@style/MyAppTheme" />
     </application>
 

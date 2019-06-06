@@ -14,8 +14,9 @@ import com.bsoft.common.activity.BaseActivity;
  * Description:
  * PS: Not easy to write code, please indicate.
  */
-public class CancelAppointResultActivity extends BaseActivity {
+public class AppointOrCancleResultActivity extends BaseActivity {
     private TextView mSuccessTitleMsgTv;
+    private int mOpType;  //1.预约 2.取消
 
     @Override
     public int getContentViewId(@Nullable Bundle savedInstanceState) {
@@ -24,9 +25,15 @@ public class CancelAppointResultActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        initDefaultToolbar("取消成功");
+        mOpType = getIntent().getIntExtra("opType", 1);
         mSuccessTitleMsgTv = findViewById(R.id.appoint_or_cancle_success_title_tv);
-        mSuccessTitleMsgTv.setText("恭喜！取消成功");
+        if (mOpType == 1) {
+            initDefaultToolbar("预约成功");
+            mSuccessTitleMsgTv.setText("恭喜！预约成功");
+        } else if (mOpType == 2) {
+            initDefaultToolbar("取消成功");
+            mSuccessTitleMsgTv.setText("恭喜！取消成功");
+        }
 
 
     }

@@ -33,20 +33,20 @@ public abstract class BaseLazyLoadFragment extends BaseMvcLazyLoadFragment {
     protected SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
     private AlertDialog.Builder mAlertDialogBuilder;
     private AVLoadingIndicatorView loadingView;
+    private View dialogView;
 
     @Override
     public void showLoading() {
         //显示加载对话框
+        dialogView = LayoutInflater.from(mContext).inflate(R.layout.dialog_loading, null, false);
         mAlertDialogBuilder = new AlertDialog.Builder(getActivity());
-        View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_loading, null, false);
-        loadingView = view.findViewById(R.id.loading_view);
-        loadingView.setIndicator(new BallSpinFadeLoaderIndicator());
-        mAlertDialogBuilder.setContentView(view)
+        mAlertDialogBuilder.setContentView(dialogView)
                 .setWidthAndHeight(getDimension(R.dimen.dp_140), getDimension(R.dimen.dp_140))
                 .setCancelable(true)
                 .show();
+        loadingView = dialogView.findViewById(R.id.loading_view);
+        loadingView.setIndicator(new BallSpinFadeLoaderIndicator());
         loadingView.smoothToShow();
-
     }
 
     @Override
@@ -81,6 +81,7 @@ public abstract class BaseLazyLoadFragment extends BaseMvcLazyLoadFragment {
         mRefreshLayout = getView().findViewById(R.id.swipeRefreshLayout);
         recyclerView = getView().findViewById(R.id.recyclerview);
         if (mRefreshLayout != null) {
+            mRefreshLayout.setColorSchemeResources(R.color.main);
             mLoadViewHelper = new LoadViewHelper(mRefreshLayout);
             mLoadViewHelper.bindRefreshLayout(mRefreshLayout);
             mOnRefreshListener = () -> loadData();
