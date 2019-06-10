@@ -21,7 +21,7 @@ public class AppointTimeVo implements Parcelable {
      * totalNumberCount : 50
      * remainNumberCount : 48
      */
-    private boolean isSelected;
+    private boolean isPreviousSelected;
     private String numberStartTime;
     private String numberEndTime;
     private String appointmentQueueCode;
@@ -42,7 +42,7 @@ public class AppointTimeVo implements Parcelable {
         defaultSign = in.readByte() != 0;
         totalNumberCount = in.readInt();
         remainNumberCount = in.readInt();
-        isSelected = in.readByte() != 0;
+        isPreviousSelected = in.readByte() != 0;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class AppointTimeVo implements Parcelable {
         dest.writeByte((byte) (defaultSign ? 1 : 0));
         dest.writeInt(totalNumberCount);
         dest.writeInt(remainNumberCount);
-        dest.writeByte((byte) (isSelected ? 1 : 0));
+        dest.writeByte((byte) (isPreviousSelected ? 1 : 0));
     }
 
     @Override
@@ -74,12 +74,12 @@ public class AppointTimeVo implements Parcelable {
         }
     };
 
-    public boolean isSelected() {
-        return isSelected;
+    public boolean isPreviousSelected() {
+        return isPreviousSelected;
     }
 
-    public void setSelected(boolean selected) {
-        isSelected = selected;
+    public void setPreviousSelected(boolean selected) {
+        isPreviousSelected = selected;
     }
 
 

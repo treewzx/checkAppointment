@@ -119,7 +119,7 @@ public class ChooseFamliyActivity extends BaseActivity {
             if (TextUtils.isEmpty(mPatientNameTv.getText())) {
                 ToastUtil.showShort("请选择就诊人");
             } else {
-
+                Const.patientType = 1;
             }
             startActivity(new Intent(this, OutPatientsAppointActivity.class));
         });
@@ -127,6 +127,7 @@ public class ChooseFamliyActivity extends BaseActivity {
             if (TextUtils.isEmpty(mPatientNameTv.getText())) {
                 ToastUtil.showShort("请选择就诊人");
             } else {
+                Const.patientType = 2;
                 startActivity(new Intent(this, OutPatientsAppointActivity.class));
             }
         });

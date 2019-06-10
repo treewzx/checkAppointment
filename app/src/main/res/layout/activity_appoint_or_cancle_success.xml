@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:layout_marginTop="@dimen/dp_m_60"
     android:padding="@dimen/dp_35">
 
     <ImageView
@@ -16,7 +17,7 @@
         android:id="@+id/appoint_or_cancle_success_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_50"
+        android:layout_marginTop="@dimen/dp_20"
         android:text="恭喜！预约成功"
         android:textColor="@android:color/black"
         android:textSize="@dimen/sp_28" />

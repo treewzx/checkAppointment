@@ -12,9 +12,12 @@ import android.view.View;
 import com.bsoft.baselib.http.HttpEnginer;
 import com.bsoft.baselib.http.exception.ApiException;
 import com.bsoft.baselib.utils.RxUtil;
+import com.bsoft.checkappointment.CheckAppointConfig;
+import com.bsoft.checkappointment.Const;
 import com.bsoft.checkappointment.MyApplication;
 import com.bsoft.checkappointment.R;
 import com.bsoft.checkappointment.common.ChooseAppointTimeActivity;
+import com.bsoft.checkappointment.event.GoToAppointmentEvent;
 import com.bsoft.checkappointment.model.PatientAppointmentVo;
 import com.bsoft.checkappointment.model.SystemConfigVo;
 import com.bsoft.common.adapter.CommonAdapter;
@@ -25,6 +28,9 @@ import com.bsoft.common.http.ResultConverter;
 import com.bsoft.common.utils.ToastUtil;
 import com.bsoft.common.utils.ZXingUtil;
 import com.bsoft.common.view.dialog.AlertDialog;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,35 +50,22 @@ public class UnappointFragment extends BaseLazyLoadFragment {
     private List<PatientAppointmentVo> mList = new ArrayList<>();
     private PatientAppointmentVo mSelectedAppointVo;
     private CommonAdapter<PatientAppointmentVo> mAdapter;
-    private boolean isNeedPayFirst;
-    private String mPayTimeLimit;
+    private boolean isNeedPayFirst;//是否需要先收费后预约 ，1=需要
+    private String mPayTimeLimit; //预约后需要支付的时间限制
+
 
     @Override
     protected void loadData() {
+        mPayTimeLimit = Const.systemConfigMap.get("CA_notFeeAutoCancelTime");
+        isNeedPayFirst = "1".equals(Const.systemConfigMap.get("CA_appointmentIsFee"));
         HttpEnginer.newInstance()
-                .addUrl("auth/sysParameter/getSysParameter")
-                .addParam("parameterKey", "CA_notFeeAutoCancelTime")
-                .post(new ResultConverter<SystemConfigVo>() {
-                })
-                .flatMap((Function<SystemConfigVo, ObservableSource<SystemConfigVo>>) systemConfigVo -> {
-                    mPayTimeLimit = systemConfigVo.getParameterValue();
-                    return HttpEnginer.newInstance()
-                            .addUrl("auth/sysParameter/getSysParameter")
-                            .addParam("parameterKey", "CA_appointmentIsFee")
-                            .post(new ResultConverter<SystemConfigVo>() {
-                            });
-                })
-                .flatMap((Function<SystemConfigVo, ObservableSource<List<PatientAppointmentVo>>>) systemConfigVo -> {
-                    isNeedPayFirst = systemConfigVo.getParameterValue().equals("1");
-                    return HttpEnginer.newInstance()
-                            .addUrl("auth/checkAppointment/getCheckAppointmentItem")
-                            .addParam("hospitalCode", MyApplication.loginUserVo.getHospitalCode())
-                            .addParam("patientType", 1)
-                            .addParam("patientIdentityCardType", 1)
-                            .addParam("patientIdentityCardNumber", "37263819980909293X")
-                            .addParam("appointmentSign", 0)
-                            .post(new ResultConverter<List<PatientAppointmentVo>>() {
-                            });
+                .addUrl("auth/checkAppointment/getCheckAppointmentItem")
+                .addParam("hospitalCode", MyApplication.loginUserVo.getHospitalCode())
+                .addParam("patientType", 1)
+                .addParam("patientIdentityCardType", 1)
+                .addParam("patientIdentityCardNumber", "37263819980909293X")
+                .addParam("appointmentSign", 0)
+                .post(new ResultConverter<List<PatientAppointmentVo>>() {
                 })
                 .compose(RxUtil.applyLifecycleLCESchedulers(this, this))
                 .subscribe(new BaseObserver<List<PatientAppointmentVo>>() {
@@ -98,6 +91,11 @@ public class UnappointFragment extends BaseLazyLoadFragment {
     @Override
     public int getContentViewId(@Nullable Bundle savedInstanceState) {
         return R.layout.fragment_patients_appoint;
+    }
+
+    @Override
+    public boolean useEventBus() {
+        return true;
     }
 
     @Override
@@ -163,6 +161,13 @@ public class UnappointFragment extends BaseLazyLoadFragment {
                     ToastUtil.showShort("立即支付");
                     dialogBuilder.dismiss();
                 }).show();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onRefreshEvent(GoToAppointmentEvent goToAppointmentEvent) {
+        if (GoToAppointmentEvent.OUTPATIENT == goToAppointmentEvent) {
+            loadData();
+        }
     }
 
 

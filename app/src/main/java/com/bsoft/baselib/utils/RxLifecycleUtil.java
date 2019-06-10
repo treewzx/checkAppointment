@@ -6,6 +6,7 @@ import com.bsoft.baselib.framework.mvc.lifecycle.ActivityLifecycleable;
 import com.bsoft.baselib.framework.mvc.lifecycle.FragmentLifecycleable;
 import com.bsoft.baselib.framework.mvc.lifecycle.Lifecycleable;
 import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.RxLifecycle;
 import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
 
 
@@ -71,6 +72,7 @@ public class RxLifecycleUtil {
     }
 
 
+
     *//**
      * 绑定 Activity/Fragment 的生命周期
      *
@@ -88,6 +90,12 @@ public class RxLifecycleUtil {
     }
 
    */
+    public static <T, R> LifecycleTransformer<T> bindUntilEvent(@NonNull final Lifecycleable<R> lifecycleable,
+                                                                final R event) {
+        Preconditions.checkNotNull(lifecycleable, "lifecycleable == null");
+        return RxLifecycle.bindUntilEvent(lifecycleable.getLifecycleSubject(), event);
+    }
+
     public static <T> LifecycleTransformer<T> bindToLifecycle(@NonNull Lifecycleable lifecycleable) {
         Preconditions.checkNotNull(lifecycleable, "lifecycleable == null");
         if (lifecycleable instanceof ActivityLifecycleable) {

@@ -29,7 +29,7 @@ import io.reactivex.subjects.Subject;
  * Description:
  * PS: Not easy to write code, please indicate.
  */
-public abstract class BaseMvcFragment extends Fragment implements ViewCallback, FragmentLifecycleable ,LceCallback {
+public abstract class BaseMvcFragment extends Fragment implements ViewCallback, FragmentLifecycleable, LceCallback {
     private BehaviorSubject<FragmentEvent> lifecycleSubject;
     private FragmentDelegate mFragmentDelegate;
     protected Context mContext;
@@ -82,9 +82,9 @@ public abstract class BaseMvcFragment extends Fragment implements ViewCallback, 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        mContext= getActivity();
+        mContext = getActivity();
         super.onViewCreated(view, savedInstanceState);
-        getFragmentDelegate().onCreateView(view,savedInstanceState);
+        getFragmentDelegate().onCreateView(view, savedInstanceState);
     }
 
     @Override
@@ -129,7 +129,7 @@ public abstract class BaseMvcFragment extends Fragment implements ViewCallback, 
         super.onDetach();
     }
 
-    public int getDimension(@DimenRes int dimenId){
+    public int getDimension(@DimenRes int dimenId) {
         return (int) getResources().getDimension(dimenId);
     }
 }

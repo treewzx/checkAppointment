@@ -13,5 +13,6 @@ import java.util.Map;
  */
 public class Const {
 
-    public static SimpleArrayMap<String,String> systemConfigMap = new SimpleArrayMap<>();
+    public static SimpleArrayMap<String, String> systemConfigMap = new SimpleArrayMap<>();
+    public static int patientType = 1; //患者类型1.门诊 2.住院
 }

@@ -12,23 +12,24 @@ import android.os.Parcelable;
  */
 public class PatientAppointmentVo implements Parcelable {
 
+
     /**
      * patientName : 测试001
      * patientAge : 23个月
-     * patientType : 1
+     * patientType : 3
      * patientNumber : A0101
-     * checkRequestNumber : NO1559280523034R678
+     * checkRequestNumber : NO1560125349925R95533
      * checkItemCode : MRI
      * checkItemName : MRI
      * appointmentSign : 1
      * signInSign : 0
      * executionSign : 0
-     * appointmentRecordId : 1559280523033R2861
-     * appointmentDateTime : 2019-05-31 09:28:43
-     * automaticCancellationTime : 2019-05-31 09:58:43
-     * automaticCancellationRemainingSeconds : 1567
-     * checkStartTime : 2019-05-31 15:28:43
-     * checkEndTime : 2019-05-31 16:28:43
+     * appointmentRecordId : 1560125349924R18492
+     * appointmentDateTime : 2019-06-10 04:09:09
+     * automaticCancellationTime : 2019-06-10 04:39:09
+     * automaticCancellationRemainingSeconds : 1800
+     * checkStartTime : 2019-06-10 10:09:09
+     * checkEndTime : 2019-06-10 11:09:09
      * appointmentHospitalCode : A00001
      * appointmentHospitalName : 创业测试医院
      * appointmentDepartmentCode : B029
@@ -44,6 +45,7 @@ public class PatientAppointmentVo implements Parcelable {
      * feeStatus : 0
      * examCode : 002
      * printCount : 0
+     * bedNumber : BEDNOA001
      */
 
     private String patientName;
@@ -51,36 +53,6 @@ public class PatientAppointmentVo implements Parcelable {
     private int patientType;
     private String patientNumber;
     private String checkRequestNumber;
-    private String checkItemCode;
-    private String checkItemName;
-    private int appointmentSign;
-    private int signInSign;
-    private int executionSign;
-    private String appointmentRecordId;
-    private String appointmentDateTime;
-    private String automaticCancellationTime;
-    private int automaticCancellationRemainingSeconds;
-    private String checkStartTime;
-    private String checkEndTime;
-    private String appointmentHospitalCode;
-    private String appointmentHospitalName;
-    private String appointmentDepartmentCode;
-    private String appointmentDepartmentName;
-    private String appointmentQueueCode;
-    private String appointmentQueueName;
-    private String appointmentSequenceNumber;
-    private String checkAddress;
-    private String mattersNeedingAttention;
-    private boolean emptyStomach;
-    private boolean holdBackUrine;
-    private int emergencySign;
-    private int feeStatus;
-    private String examCode;
-    private int printCount;
-
-    public PatientAppointmentVo() {
-
-    }
 
     protected PatientAppointmentVo(Parcel in) {
         patientName = in.readString();
@@ -96,7 +68,7 @@ public class PatientAppointmentVo implements Parcelable {
         appointmentRecordId = in.readString();
         appointmentDateTime = in.readString();
         automaticCancellationTime = in.readString();
-        automaticCancellationRemainingSeconds = in.readInt();
+        automaticCancellationRemainingSeconds = in.readLong();
         checkStartTime = in.readString();
         checkEndTime = in.readString();
         appointmentHospitalCode = in.readString();
@@ -114,6 +86,7 @@ public class PatientAppointmentVo implements Parcelable {
         feeStatus = in.readInt();
         examCode = in.readString();
         printCount = in.readInt();
+        bedNumber = in.readString();
     }
 
     @Override
@@ -131,7 +104,7 @@ public class PatientAppointmentVo implements Parcelable {
         dest.writeString(appointmentRecordId);
         dest.writeString(appointmentDateTime);
         dest.writeString(automaticCancellationTime);
-        dest.writeInt(automaticCancellationRemainingSeconds);
+        dest.writeLong(automaticCancellationRemainingSeconds);
         dest.writeString(checkStartTime);
         dest.writeString(checkEndTime);
         dest.writeString(appointmentHospitalCode);
@@ -149,6 +122,7 @@ public class PatientAppointmentVo implements Parcelable {
         dest.writeInt(feeStatus);
         dest.writeString(examCode);
         dest.writeInt(printCount);
+        dest.writeString(bedNumber);
     }
 
     @Override
@@ -272,11 +246,11 @@ public class PatientAppointmentVo implements Parcelable {
         this.automaticCancellationTime = automaticCancellationTime;
     }
 
-    public int getAutomaticCancellationRemainingSeconds() {
+    public long getAutomaticCancellationRemainingSeconds() {
         return automaticCancellationRemainingSeconds;
     }
 
-    public void setAutomaticCancellationRemainingSeconds(int automaticCancellationRemainingSeconds) {
+    public void setAutomaticCancellationRemainingSeconds(long automaticCancellationRemainingSeconds) {
         this.automaticCancellationRemainingSeconds = automaticCancellationRemainingSeconds;
     }
 
@@ -415,4 +389,45 @@ public class PatientAppointmentVo implements Parcelable {
     public void setPrintCount(int printCount) {
         this.printCount = printCount;
     }
+
+    public String getBedNumber() {
+        return bedNumber;
+    }
+
+    public void setBedNumber(String bedNumber) {
+        this.bedNumber = bedNumber;
+    }
+
+    private String checkItemCode;
+    private String checkItemName;
+    private int appointmentSign;
+    private int signInSign;
+    private int executionSign;
+    private String appointmentRecordId;
+    private String appointmentDateTime;
+    private String automaticCancellationTime;
+    private long automaticCancellationRemainingSeconds;
+    private String checkStartTime;
+    private String checkEndTime;
+    private String appointmentHospitalCode;
+    private String appointmentHospitalName;
+    private String appointmentDepartmentCode;
+    private String appointmentDepartmentName;
+    private String appointmentQueueCode;
+    private String appointmentQueueName;
+    private String appointmentSequenceNumber;
+    private String checkAddress;
+    private String mattersNeedingAttention;
+    private boolean emptyStomach;
+    private boolean holdBackUrine;
+    private int emergencySign;
+    private int feeStatus;
+    private String examCode;
+    private int printCount;
+    private String bedNumber;
+
+    public PatientAppointmentVo() {
+
+    }
+
 }

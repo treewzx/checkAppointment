@@ -13,6 +13,7 @@ import com.alibaba.fastjson.JSON;
 import com.bsoft.baselib.http.HttpEnginer;
 import com.bsoft.baselib.http.exception.ApiException;
 import com.bsoft.baselib.utils.RxUtil;
+import com.bsoft.checkappointment.Const;
 import com.bsoft.checkappointment.MyApplication;
 import com.bsoft.checkappointment.R;
 import com.bsoft.checkappointment.model.PatientAppointmentVo;
@@ -40,7 +41,7 @@ public class CancelAppointActivity extends BaseAppointOrCancleActivity {
     @Override
     public void onPreExcuteTask() {
         super.onPreExcuteTask();
-        //getCancleCountLimit();
+        mCancelChangeAppointCountLimit = Const.systemConfigMap.get("CA_updateTimes");
         getCancledCount();
     }
 
@@ -57,26 +58,6 @@ public class CancelAppointActivity extends BaseAppointOrCancleActivity {
     @Override
     protected void excuteTask() {
         showCancleDialog();
-    }
-
-    private void getCancleCountLimit() {
-        HttpEnginer.newInstance()
-                .addUrl("auth/sysParameter/getSysParameter")
-                .addParam("parameterKey", "CA_updateTimes")
-                .post(new ResultConverter<SystemConfigVo>() {
-                })
-                .compose(RxUtil.applyLifecycleSchedulers(this))
-                .subscribe(new BaseObserver<SystemConfigVo>() {
-                    @Override
-                    public void onFail(ApiException exception) {
-                        ToastUtil.showShort(exception.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(SystemConfigVo systemConfigVo) {
-                        mCancelChangeAppointCountLimit = systemConfigVo.getParameterValue();
-                    }
-                });
     }
 
     private void getCancledCount() {
@@ -102,23 +83,28 @@ public class CancelAppointActivity extends BaseAppointOrCancleActivity {
 
     private void showCancleDialog() {
         String noteStr = null;
-        if (Integer.parseInt(mCancelChangeAppointCountLimit) > 0) {
-            noteStr = String.format(getString(R.string.dialog_cancel_appointment_note_with_linit), mCancelChangeAppointCountLimit, String.valueOf(mCancledCount));
+        if (Integer.parseInt(mCancelChangeAppointCountLimit) > mCancledCount) {
+            if (Integer.parseInt(mCancelChangeAppointCountLimit) > 0) {
+                noteStr = String.format(getString(R.string.dialog_cancel_appointment_note_with_linit), mCancelChangeAppointCountLimit, String.valueOf(mCancledCount + 1));
+            } else {
+                noteStr = getString(R.string.dialog_cancel_appointment_note_without_limit);
+            }
+            AlertDialog.Builder cancleDialogBuilder = new AlertDialog.Builder(this);
+            cancleDialogBuilder.setCancelable(false)
+                    .setContentView(R.layout.dialog_cancel_appointment_note)
+                    .setAnimations(R.style.dialog_from_bottom_anim)
+                    .setText(R.id.dialog_cancel_appointment_note_tv, noteStr)
+                    .setOnClickeListener(R.id.dialog_appoint_continue_tv, v -> {
+                        cancleDialogBuilder.dismiss();
+                        cancleAppointment();
+                    })
+                    .setOnClickeListener(R.id.dialog_appoint_back_tv,
+                            v -> cancleDialogBuilder.dismiss())
+                    .show();
         } else {
-            noteStr = getString(R.string.dialog_cancel_appointment_note_without_limit);
+            ToastUtil.showShort("取消次数超过限制，无法取消，请按上次预约时间检查");
         }
-        AlertDialog.Builder cancleDialogBuilder = new AlertDialog.Builder(this);
-        cancleDialogBuilder.setCancelable(false)
-                .setContentView(R.layout.dialog_cancel_appointment_note)
-                .setAnimations(R.style.dialog_from_bottom_anim)
-                .setText(R.id.dialog_cancel_appointment_note_tv, noteStr)
-                .setOnClickeListener(R.id.dialog_appoint_continue_tv, v -> {
-                    cancleDialogBuilder.dismiss();
-                    cancleAppointment();
-                })
-                .setOnClickeListener(R.id.dialog_appoint_back_tv,
-                        v -> cancleDialogBuilder.dismiss())
-                .show();
+
     }
 
     private void cancleAppointment() {
@@ -146,7 +132,6 @@ public class CancelAppointActivity extends BaseAppointOrCancleActivity {
                         } else {
                             ToastUtil.showShort("取消预约失败，请按原来预约时间进行检查");
                         }
-
                     }
                 });
     }

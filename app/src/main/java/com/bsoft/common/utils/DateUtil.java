@@ -7,6 +7,7 @@ import com.bsoft.checkappointment.common.CancelAppointActivity;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Author by wangzhaox,
@@ -102,7 +103,22 @@ public class DateUtil {
         } catch (ParseException e) {
             return 0;
         }
+    }
 
+    public static boolean isFirstBeforeSecond(String firstDateStr, String secondDateStr) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date firstDate = simpleDateFormat.parse(firstDateStr);
+            Date secondDate = simpleDateFormat.parse(secondDateStr);
+            return firstDate.getTime() <= secondDate.getTime();
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    //判断是否是同一天
+    public static boolean isSameDay(String firstDateStr, String secondDateStr) {
+        return getYMD(firstDateStr).equals(getYMD(secondDateStr));
     }
 
 

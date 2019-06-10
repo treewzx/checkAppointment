@@ -169,10 +169,25 @@ public class ChooseAppointTimeActivity extends BaseActivity {
                     roundViewDelegate.setStrokeColor(fetchColor(android.R.color.darker_gray));
                     holder.setTextColorRes(android.R.color.darker_gray, R.id.time_tv, R.id.num_state_tv, R.id.num_count_tv);
                 }
+                //前一次的预约时间和显示的时间比较确认上次选中的时间
+                if (DateUtil.isSameDay(mDateList.get(mSelectDatePosition).getAppointmentDate(), mAppointVo.getCheckStartTime())) {
+                    //是同一天然后判断日期
+                    if (DateUtil.isFirstBeforeSecond(appointTimeVo.getNumberStartTime(), mAppointVo.getCheckStartTime())
+                            && DateUtil.isFirstBeforeSecond(mAppointVo.getCheckStartTime(), appointTimeVo.getNumberEndTime())) {
+                        roundViewDelegate.setStrokeColor(fetchColor(android.R.color.holo_orange_dark));
+                        appointTimeVo.setPreviousSelected(true);
+                        if (appointTimeVo.getRemainNumberCount() != 0) {
+                            holder.setTextColorRes(R.id.num_count_tv, android.R.color.holo_orange_dark);
+                        }
+                    }
+                } else {
+                    appointTimeVo.setPreviousSelected(false);
+                }
+
 
                 //设置点击事件
                 holder.getConvertView().setOnClickListener(v -> {
-                    if (mTimeList.get(holder.getAdapterPosition()).getRemainNumberCount() != 0) {
+                    if (mTimeList.get(holder.getAdapterPosition()).getRemainNumberCount() != 0 && !(mTimeList.get(holder.getAdapterPosition()).isPreviousSelected())) {
                         mSelectTimePosition = holder.getAdapterPosition();
                         mSelectedAppointTimeVo = mTimeList.get(mSelectTimePosition);
                         notifyDataSetChanged();

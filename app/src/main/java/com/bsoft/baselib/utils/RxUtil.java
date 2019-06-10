@@ -24,6 +24,7 @@ public class RxUtil {
 
     /**
      * 切换线程
+     *
      * @param <T>
      * @return
      */
@@ -39,6 +40,7 @@ public class RxUtil {
 
     /**
      * 切换现成并绑定页面的生命周期
+     *
      * @param lifecycleable
      * @param <T>
      * @return
@@ -49,13 +51,32 @@ public class RxUtil {
             public Observable<T> apply(Observable<T> upstream) {
                 return upstream.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .compose(RxLifecycleUtil.<T>bindToLifecycle(lifecycleable));
+                        .compose(RxLifecycleUtil.bindToLifecycle(lifecycleable));
+            }
+        };
+    }
+
+    /**
+     * 切换现成并绑定页面的生命周期
+     *
+     * @param lifecycleable
+     * @param <T>
+     * @return
+     */
+    public static <R, T> ObservableTransformer<T, T> applyLifecycleSchedulers(final Lifecycleable<R> lifecycleable, final R event) {
+        return new ObservableTransformer<T, T>() {
+            @Override
+            public Observable<T> apply(Observable<T> upstream) {
+                return upstream.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .compose(RxLifecycleUtil.bindUntilEvent(lifecycleable, event));
             }
         };
     }
 
     /**
      * 切换线程、订阅绑定页面的生命周期并且订阅时显示加载中，完成后隐藏加载中
+     *
      * @param lifecycleable
      * @param lceCallback
      * @param <T>

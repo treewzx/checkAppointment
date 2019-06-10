@@ -63,17 +63,17 @@ public abstract class BaseAppointOrCancleActivity extends BaseActivity {
     public void initData(@Nullable Bundle savedInstanceState) {
         String checkTime = null;
         initDefaultToolbar(getToolbarTitle());
-        onPreExcuteTask();
         initView();
         mAppointExcuteTv.setText(getExcuteBtnText());
         mAppointVo = getIntent().getParcelableExtra("appointmentItem");
         mAppointTimeVo = getIntent().getParcelableExtra("appointTime");
         mIsCancleAppoint = getIntent().getBooleanExtra("isCancleAppoint", false);
-
+        onPreExcuteTask();
         if (mAppointVo.getPatientType() == 3) {
             mPatientDepartmentll.setVisibility(View.VISIBLE);
             mPatientBedNumll.setVisibility(View.VISIBLE);
             mPatientNoTitleTv.setText("住院号码");
+            mPatientBedNumTv.setText(mAppointVo.getBedNumber());
         } else {
             mPatientDepartmentll.setVisibility(View.GONE);
             mPatientBedNumll.setVisibility(View.GONE);
