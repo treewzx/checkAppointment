@@ -21,7 +21,7 @@ import com.bsoft.common.utils.DateUtil;
  * PS: Not easy to write code, please indicate.
  */
 public abstract class BaseAppointOrCancleActivity extends BaseActivity {
-    private PatientAppointmentVo mAppointVo;
+    protected PatientAppointmentVo mAppointVo;
     private AppointTimeVo mAppointTimeVo;
     private boolean mIsCancleAppoint;
 

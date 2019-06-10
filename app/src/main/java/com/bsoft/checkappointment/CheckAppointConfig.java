@@ -6,11 +6,15 @@ import com.bsoft.baselib.http.HttpEnginer;
 import com.bsoft.baselib.http.HttpEnginerConfig;
 import com.bsoft.baselib.http.RequestParamMap;
 import com.bsoft.baselib.http.request.retrofit.RetrofitRequest;
+import com.bsoft.checkappointment.callback.OnOpenModuleListener;
+import com.bsoft.checkappointment.callback.OnSelectPatientListener;
+import com.bsoft.checkappointment.model.AccountInfo;
 import com.bsoft.checkappointment.model.ChoosedFamliyVo;
 import com.bsoft.common.utils.ToastUtil;
 
 import java.util.Map;
 
+import butterknife.OnClick;
 import io.reactivex.functions.BiFunction;
 
 /**
@@ -23,7 +27,8 @@ import io.reactivex.functions.BiFunction;
 public class CheckAppointConfig {
 
     private static volatile CheckAppointConfig instance;
-    private OnChangeFamliyListener mOnChangeFamliyListener;
+    private OnSelectPatientListener mOnSelectPatientListener;
+    private OnOpenModuleListener mOnOpenModuleListener;
     //private OnPay
 
     public static CheckAppointConfig getInstance() {
@@ -71,19 +76,23 @@ public class CheckAppointConfig {
         return this;
     }
 
-    public CheckAppointConfig setChangeFamliyListener(OnChangeFamliyListener onChangeFamliyListener) {
-        this.mOnChangeFamliyListener = onChangeFamliyListener;
+    public CheckAppointConfig setOnSelectPatientListener(OnSelectPatientListener onSelectPatientListener) {
+        this.mOnSelectPatientListener = onSelectPatientListener;
         return this;
     }
 
-    public OnChangeFamliyListener getOnChangeFamliyListener() {
-        return mOnChangeFamliyListener;
+    public CheckAppointConfig setOnOpenModuleListener(OnOpenModuleListener onOpenModuleListener) {
+        this.mOnOpenModuleListener = onOpenModuleListener;
+        return this;
     }
 
-    public interface OnChangeFamliyListener {
-        public boolean onChangeFamliy();
+    public OnSelectPatientListener getOnSelectPatientListener() {
+        return mOnSelectPatientListener;
     }
 
+    public OnOpenModuleListener getOnOpenModuleListener() {
+        return mOnOpenModuleListener;
+    }
 
 
 }

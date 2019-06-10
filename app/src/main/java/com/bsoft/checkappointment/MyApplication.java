@@ -9,6 +9,9 @@ import com.bsoft.baselib.http.HttpEnginer;
 import com.bsoft.baselib.http.HttpEnginerConfig;
 import com.bsoft.baselib.http.RequestParamMap;
 import com.bsoft.baselib.http.request.retrofit.RetrofitRequest;
+import com.bsoft.checkappointment.callback.OnSelectPatientListener;
+import com.bsoft.checkappointment.callback.SelectPatientCallback;
+import com.bsoft.checkappointment.model.PatientInfo;
 import com.bsoft.common.model.LoginUserVo;
 import com.bsoft.common.utils.DeviceUtil;
 import com.bsoft.common.utils.MD5;
@@ -45,6 +48,7 @@ public class MyApplication extends Application {
                 .httpRequest(new RetrofitRequest())
                 .debug(true)
                 .baseUrl("http://wxtest01.atag.bsoft.com.cn/base-service/api/")
+                //.baseUrl("http://10.0.38.78:8095/api/")
                 .build();
         HttpEnginer.init(httpEnginerConfig);
         HttpEnginer.setOnInterceptFunction(new BiFunction<Map<String, String>, Map<String, String>, RequestParamMap>() {
@@ -73,7 +77,11 @@ public class MyApplication extends Application {
         });
 
 
+
+
+
     }
+
 
     public static Context setInstance(Application appa) {
         app = appa;

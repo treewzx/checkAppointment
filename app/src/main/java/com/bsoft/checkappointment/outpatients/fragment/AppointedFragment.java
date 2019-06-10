@@ -17,6 +17,7 @@ import com.alibaba.fastjson.JSON;
 import com.bsoft.baselib.http.HttpEnginer;
 import com.bsoft.baselib.http.exception.ApiException;
 import com.bsoft.baselib.utils.RxUtil;
+import com.bsoft.checkappointment.Const;
 import com.bsoft.checkappointment.MyApplication;
 import com.bsoft.checkappointment.R;
 import com.bsoft.checkappointment.common.CancelAppointActivity;
@@ -72,6 +73,11 @@ public class AppointedFragment extends BaseLazyLoadFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        mCancelAppointTimeLimit = Const.systemConfigMap.get("CA_cancelReservationLeadTime");
+        mChangeAppointTimeLimit = Const.systemConfigMap.get("CA_reAppointmentLeadTime");
+        mSignType = Const.systemConfigMap.get("CA_signInType");
+        mSignTimeLimit = Const.systemConfigMap.get("CA_signInLeadTime");
+        mSignDistanceLimit = Const.systemConfigMap.get("CA_appSignInDistance");
         if (recyclerView != null) {
             mAdapter = new CommonAdapter<PatientAppointmentVo>(mContext, R.layout.recycle_item_outpatients_appointed, mList) {
 
@@ -156,59 +162,15 @@ public class AppointedFragment extends BaseLazyLoadFragment {
     @Override
     protected void loadData() {
         hasSignedAppointment = false;
-        //提前取消的时间
-        Observable<SystemConfigVo> cancelAppointTimeConfig = HttpEnginer.newInstance()
-                .addUrl("auth/sysParameter/getSysParameter")
-                .addParam("parameterKey", "CA_cancelReservationLeadTime")
-                .post(new ResultConverter<SystemConfigVo>() {
-                });
-        //重新预约提前时间（小时）
-        Observable<SystemConfigVo> reAppointTimeConfig = HttpEnginer.newInstance()
-                .addUrl("auth/sysParameter/getSysParameter")
-                .addParam("parameterKey", "CA_reAppointmentLeadTime")
-                .post(new ResultConverter<SystemConfigVo>() {
-                });
-        //签到方式 1.扫码 2.App
-        Observable<SystemConfigVo> signTypeConfig = HttpEnginer.newInstance()
-                .addUrl("auth/sysParameter/getSysParameter")
-                .addParam("parameterKey", "CA_signInType")
-                .post(new ResultConverter<SystemConfigVo>() {
-                });
-        //签到提前时间（分钟）
-        Observable<SystemConfigVo> signTimeConfig = HttpEnginer.newInstance()
-                .addUrl("auth/sysParameter/getSysParameter")
-                .addParam("parameterKey", "CA_signInLeadTime")
-                .post(new ResultConverter<SystemConfigVo>() {
-                });
-        //签到定位距离(米)
-        Observable<SystemConfigVo> signDistanceConfig = HttpEnginer.newInstance()
-                .addUrl("auth/sysParameter/getSysParameter")
-                .addParam("parameterKey", "CA_appSignInDistance")
-                .post(new ResultConverter<SystemConfigVo>() {
-                });
-
-        Observable.zip(cancelAppointTimeConfig, reAppointTimeConfig, signTypeConfig, signTimeConfig, signDistanceConfig,
-                (systemConfigVo, systemConfigVo2, systemConfigVo3, systemConfigVo4, systemConfigVo5) -> {
-                    //大于这个值可以进行取消操作
-                    mCancelAppointTimeLimit = systemConfigVo.getParameterValue();
-                    //大于这个值可以进行改约操作
-                    mChangeAppointTimeLimit = systemConfigVo2.getParameterValue();
-                    mSignType = systemConfigVo3.getParameterValue();
-                    //App签到方式下时间小于mSignTimeLimit这个值，并且距离小于mSignDistanceLimit，可以进行签到
-                    mSignTimeLimit = systemConfigVo4.getParameterValue();
-                    mSignDistanceLimit = systemConfigVo5.getParameterValue();
-                    return 1;
+        HttpEnginer.newInstance()
+                .addUrl("auth/checkAppointment/getCheckAppointmentItem")
+                .addParam("hospitalCode", MyApplication.loginUserVo.getHospitalCode())
+                .addParam("patientType", 1)
+                .addParam("patientIdentityCardType", 1)
+                .addParam("patientIdentityCardNumber", "37263819980909293X")
+                .addParam("appointmentSign", 1)
+                .post(new ResultConverter<List<PatientAppointmentVo>>() {
                 })
-                .flatMap((Function<Integer, ObservableSource<List<PatientAppointmentVo>>>)
-                        integer -> HttpEnginer.newInstance()
-                                .addUrl("auth/checkAppointment/getCheckAppointmentItem")
-                                .addParam("hospitalCode", MyApplication.loginUserVo.getHospitalCode())
-                                .addParam("patientType", 1)
-                                .addParam("patientIdentityCardType", 1)
-                                .addParam("patientIdentityCardNumber", "37263819980909293X")
-                                .addParam("appointmentSign", 1)
-                                .post(new ResultConverter<List<PatientAppointmentVo>>() {
-                                }))
                 .compose(RxUtil.applyLifecycleLCESchedulers(this, this))
                 .subscribe(new BaseObserver<List<PatientAppointmentVo>>() {
                     @Override

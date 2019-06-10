@@ -4,7 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.TextView;
 
+import com.bsoft.checkappointment.CheckAppointConfig;
 import com.bsoft.checkappointment.R;
+import com.bsoft.checkappointment.callback.OnSelectPatientListener;
+import com.bsoft.checkappointment.callback.SelectPatientCallback;
+import com.bsoft.checkappointment.model.PatientInfo;
 import com.bsoft.common.activity.BaseActivity;
 
 /**
@@ -34,6 +38,8 @@ public class AppointOrCancleResultActivity extends BaseActivity {
             initDefaultToolbar("取消成功");
             mSuccessTitleMsgTv.setText("恭喜！取消成功");
         }
+
+
 
 
     }
