@@ -40,6 +40,12 @@
         <activity
             android:name=".common.ReAppointActivity"
             android:theme="@style/MyAppTheme" />
+        <activity
+            android:name=".operationsearch.OperationSearchActivity"
+            android:theme="@style/MyAppTheme" />
+        <activity
+            android:name=".operationsearch.OperationDetailActivity"
+            android:theme="@style/MyAppTheme" />
     </application>
 
 </manifest>

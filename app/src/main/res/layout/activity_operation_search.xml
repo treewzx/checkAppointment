@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/choose_famliy_ll"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:background="@color/main"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/dp_10"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingEnd="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10">
+
+        <ImageView
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/opsearch_head" />
+
+        <TextView
+            android:id="@+id/patient_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/dp_10"
+            android:paddingLeft="@dimen/dp_10"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/dp_20" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:layout_weight="1"
+            android:drawableRight="@drawable/op_arrow_right"
+            android:gravity="end"
+            android:text="切换就诊人"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp_16" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></FrameLayout>
+
+        <com.barnettwong.dragfloatactionbuttonlibrary.view.DragFloatActionButton
+            android:id="@+id/switch_btn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|right"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="30dp"
+            android:clickable="true"
+            android:src="@drawable/op_history_btn" />
+    </FrameLayout>
+
+
+</LinearLayout>

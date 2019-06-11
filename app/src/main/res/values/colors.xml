@@ -7,4 +7,5 @@
     <color name="main">#2ABC6D</color>
     <color name="white">#FFFFFF</color>
     <color name="appoint_light_orange">#fff1cd</color>
+    <color name="lighter_gray">#eee</color>
 </resources>

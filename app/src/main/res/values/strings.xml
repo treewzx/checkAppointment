@@ -11,4 +11,7 @@
     <string name="sign_current_no"><Data><![CDATA[<font color="#000000">当前号码</font><font color="#2ABC6D"><big>&#160;%1$s</big></font>]]></Data></string>
     <string name="dialog_cancel_appointment_note_with_linit">同一项目允许取消次数为%1$s次，当前做第%2$s次取消，取消预约不可退回，是否确认取消预约？.</string>
     <string name="dialog_cancel_appointment_note_without_limit">取消预约不可退回，是否确认取消预约？.</string>
+    <string name="operation_time">手术时间：%1$s</string>
+    <string name="operation_location">手术地点：%1$s</string>
+
 </resources>

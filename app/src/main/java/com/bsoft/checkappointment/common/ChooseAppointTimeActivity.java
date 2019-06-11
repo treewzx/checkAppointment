@@ -170,7 +170,7 @@ public class ChooseAppointTimeActivity extends BaseActivity {
                     holder.setTextColorRes(android.R.color.darker_gray, R.id.time_tv, R.id.num_state_tv, R.id.num_count_tv);
                 }
                 //前一次的预约时间和显示的时间比较确认上次选中的时间
-                if (DateUtil.isSameDay(mDateList.get(mSelectDatePosition).getAppointmentDate(), mAppointVo.getCheckStartTime())) {
+                if (mIsReAppoint && DateUtil.isSameDay(mDateList.get(mSelectDatePosition).getAppointmentDate(), mAppointVo.getCheckStartTime())) {
                     //是同一天然后判断日期
                     if (DateUtil.isFirstBeforeSecond(appointTimeVo.getNumberStartTime(), mAppointVo.getCheckStartTime())
                             && DateUtil.isFirstBeforeSecond(mAppointVo.getCheckStartTime(), appointTimeVo.getNumberEndTime())) {

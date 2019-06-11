@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dp_10"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_45"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/dp_30"
+        android:paddingLeft="@dimen/dp_30"
+        android:paddingEnd="@dimen/dp_30"
+        android:paddingRight="@dimen/dp_30">
+
+        <TextView
+            android:id="@+id/operation_department_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="科室"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/sp_18" />
+
+        <TextView
+            android:id="@+id/operation_name_tv"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="手术名称"
+            android:textSize="@dimen/sp_18" />
+    </LinearLayout>
+
+    <include layout="@layout/base_divide_line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_80"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="状态"
+                android:textSize="@dimen/sp_16" />
+
+            <TextView
+                android:id="@+id/operation_state_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/main"
+                android:textSize="@dimen/sp_25" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="@dimen/dp_0_5"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_15"
+            android:layout_marginBottom="@dimen/dp_15"
+            android:background="@android:color/darker_gray" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="手术间"
+                android:textSize="@dimen/sp_16" />
+
+            <TextView
+                android:id="@+id/operation_room_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="暂未安排"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_25" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <include layout="@layout/base_divide_line" />
+
+    <TextView
+        android:id="@+id/operation_time_tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:gravity="center_vertical|left"
+        android:paddingStart="@dimen/dp_20"
+        android:paddingLeft="@dimen/dp_20"
+        android:textSize="@dimen/sp_16" />
+
+    <TextView
+        android:id="@+id/operation_location_tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_30"
+        android:gravity="left"
+        android:paddingStart="@dimen/dp_20"
+        android:paddingLeft="@dimen/dp_20"
+        android:textSize="@dimen/sp_16" />
+
+</LinearLayout>

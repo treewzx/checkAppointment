@@ -23,6 +23,7 @@ import com.bsoft.checkappointment.callback.OnSelectPatientListener;
 import com.bsoft.checkappointment.callback.SelectPatientCallback;
 import com.bsoft.checkappointment.model.PatientInfo;
 import com.bsoft.checkappointment.model.SystemConfigVo;
+import com.bsoft.checkappointment.operationsearch.OperationSearchActivity;
 import com.bsoft.checkappointment.outpatients.activity.OutPatientsAppointActivity;
 import com.bsoft.common.activity.BaseActivity;
 import com.bsoft.common.http.BaseObserver;
@@ -128,8 +129,9 @@ public class ChooseFamliyActivity extends BaseActivity {
                 ToastUtil.showShort("请选择就诊人");
             } else {
                 Const.patientType = 2;
-                startActivity(new Intent(this, OutPatientsAppointActivity.class));
+
             }
+            startActivity(new Intent(this, OperationSearchActivity.class));
         });
         findViewById(R.id.choose_famliy_ll).setOnClickListener(v -> {
             CheckAppointConfig.getInstance()
