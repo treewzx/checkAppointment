@@ -26,6 +26,10 @@
             android:launchMode="singleTask"
             android:theme="@style/MyAppTheme" />
         <activity
+            android:name=".inpatients.activity.InPatientAppointActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/MyAppTheme" />
+        <activity
             android:name=".common.SubmitAppointActivity"
             android:theme="@style/MyAppTheme" />
         <activity
@@ -38,13 +42,16 @@
             android:name=".common.AppointOrCancleResultActivity"
             android:theme="@style/MyAppTheme" />
         <activity
-            android:name=".common.ReAppointActivity"
+            android:name=".common.ReAppointSureActivity"
             android:theme="@style/MyAppTheme" />
         <activity
             android:name=".operationsearch.OperationSearchActivity"
             android:theme="@style/MyAppTheme" />
         <activity
             android:name=".operationsearch.OperationDetailActivity"
+            android:theme="@style/MyAppTheme" />
+        <activity
+            android:name=".common.PrepareReAppointActivity"
             android:theme="@style/MyAppTheme" />
     </application>
 

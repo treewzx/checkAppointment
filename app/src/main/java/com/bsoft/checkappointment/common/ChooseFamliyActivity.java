@@ -21,6 +21,7 @@ import com.bsoft.checkappointment.MyApplication;
 import com.bsoft.checkappointment.R;
 import com.bsoft.checkappointment.callback.OnSelectPatientListener;
 import com.bsoft.checkappointment.callback.SelectPatientCallback;
+import com.bsoft.checkappointment.inpatients.activity.InPatientAppointActivity;
 import com.bsoft.checkappointment.model.PatientInfo;
 import com.bsoft.checkappointment.model.SystemConfigVo;
 import com.bsoft.checkappointment.operationsearch.OperationSearchActivity;
@@ -131,7 +132,7 @@ public class ChooseFamliyActivity extends BaseActivity {
                 Const.patientType = 2;
 
             }
-            startActivity(new Intent(this, OperationSearchActivity.class));
+            startActivity(new Intent(this, InPatientAppointActivity.class));
         });
         findViewById(R.id.choose_famliy_ll).setOnClickListener(v -> {
             CheckAppointConfig.getInstance()
@@ -143,6 +144,12 @@ public class ChooseFamliyActivity extends BaseActivity {
                             mPatientNameTv.setText(patientInfo.getPatientName());
                         }
                     });
+        });
+        findViewById(R.id.operation_search).setOnClickListener(v -> {
+            startActivity(new Intent(this, OperationSearchActivity.class));
+        });
+        findViewById(R.id.discharge_medication_tv).setOnClickListener(v -> {
+            startActivity(new Intent(this, OperationSearchActivity.class));
         });
 
 

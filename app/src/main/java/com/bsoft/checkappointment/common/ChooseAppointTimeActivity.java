@@ -93,7 +93,7 @@ public class ChooseAppointTimeActivity extends BaseActivity {
                 if (mSelectedAppointTimeVo != null) {
                     Intent intent = null;
                     if (mIsReAppoint) {
-                        intent = new Intent(ChooseAppointTimeActivity.this, ReAppointActivity.class);
+                        intent = new Intent(ChooseAppointTimeActivity.this, ReAppointSureActivity.class);
                     } else {
                         intent = new Intent(ChooseAppointTimeActivity.this, SubmitAppointActivity.class);
                     }

@@ -120,4 +120,21 @@
         android:text="可查询一年内门诊和住院的所有检查单，包括待预约、待执行和已执行"
         android:textColor="@android:color/darker_gray" />
 
+    <TextView
+        android:id="@+id/operation_search"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_20"
+        android:background="@color/main"
+        android:gravity="center"
+        android:text="手术查询" />
+
+    <TextView
+        android:id="@+id/discharge_medication_tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_20"
+        android:background="@color/main"
+        android:gravity="center"
+        android:text="出院带药" />
 </LinearLayout>

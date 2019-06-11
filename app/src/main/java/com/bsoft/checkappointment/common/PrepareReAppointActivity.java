@@ -1,13 +1,6 @@
 package com.bsoft.checkappointment.common;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.text.Html;
-import android.text.Spanned;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.bsoft.baselib.http.HttpEnginer;
@@ -18,12 +11,9 @@ import com.bsoft.checkappointment.MyApplication;
 import com.bsoft.checkappointment.R;
 import com.bsoft.checkappointment.model.PatientAppointmentVo;
 import com.bsoft.checkappointment.model.ReAppointOrCancleCountVo;
-import com.bsoft.checkappointment.model.SystemConfigVo;
-import com.bsoft.common.activity.BaseActivity;
 import com.bsoft.common.http.BaseObserver;
 import com.bsoft.common.http.HttpBaseResultVo;
 import com.bsoft.common.http.ResultConverter;
-import com.bsoft.common.utils.DateUtil;
 import com.bsoft.common.utils.ToastUtil;
 import com.bsoft.common.view.dialog.AlertDialog;
 
@@ -34,9 +24,10 @@ import com.bsoft.common.view.dialog.AlertDialog;
  * Description:
  * PS: Not easy to write code, please indicate.
  */
-public class CancelAppointActivity extends BaseAppointOrCancleActivity {
+//重新预约准备页面
+public class PrepareReAppointActivity extends BaseAppointOrCancleActivity {
     private String mCancelChangeAppointCountLimit;//取消改约的次数限制
-    private int mCancledCount;
+    private int mReAppointCount;
 
     @Override
     public void onPreExcuteTask() {
@@ -47,12 +38,12 @@ public class CancelAppointActivity extends BaseAppointOrCancleActivity {
 
     @Override
     protected String getToolbarTitle() {
-        return "取消确认";
+        return "重新预约";
     }
 
     @Override
     protected String getExcuteBtnText() {
-        return "确认取消";
+        return "重新预约";
     }
 
     @Override
@@ -76,18 +67,18 @@ public class CancelAppointActivity extends BaseAppointOrCancleActivity {
 
                     @Override
                     public void onNext(ReAppointOrCancleCountVo reAppointOrCancleCountVo) {
-                        mCancledCount = reAppointOrCancleCountVo.getUpdateTimes();
+                        mReAppointCount = reAppointOrCancleCountVo.getUpdateTimes();
                     }
                 });
     }
 
     private void showCancleDialog() {
         String noteStr = null;
-        if (Integer.parseInt(mCancelChangeAppointCountLimit) > mCancledCount) {
+        if (Integer.parseInt(mCancelChangeAppointCountLimit) > mReAppointCount) {
             if (Integer.parseInt(mCancelChangeAppointCountLimit) > 0) {
-                noteStr = String.format(getString(R.string.dialog_cancel_appointment_note_with_limit), mCancelChangeAppointCountLimit, String.valueOf(mCancledCount + 1));
+                noteStr = String.format(getString(R.string.dialog_change_appointment_note_with_limit), mCancelChangeAppointCountLimit, String.valueOf(mReAppointCount + 1));
             } else {
-                noteStr = getString(R.string.dialog_cancel_appointment_note_without_limit);
+                noteStr = "是否确认改约？";
             }
             AlertDialog.Builder cancleDialogBuilder = new AlertDialog.Builder(this);
             cancleDialogBuilder.setCancelable(false)
@@ -96,45 +87,25 @@ public class CancelAppointActivity extends BaseAppointOrCancleActivity {
                     .setText(R.id.dialog_cancel_appointment_note_tv, noteStr)
                     .setOnClickeListener(R.id.dialog_appoint_continue_tv, v -> {
                         cancleDialogBuilder.dismiss();
-                        cancleAppointment();
+                        gotoReAppointment();
                     })
                     .setOnClickeListener(R.id.dialog_appoint_back_tv,
                             v -> cancleDialogBuilder.dismiss())
                     .show();
         } else {
-            ToastUtil.showShort("取消次数超过限制，无法取消，请按上次预约时间检查");
+            ToastUtil.showShort("改约次数超过限制，无法改约，请按上次预约时间检查");
         }
 
     }
-
-    private void cancleAppointment() {
-        HttpEnginer.newInstance()
-                .addUrl("auth/checkAppointment/doCancelReservation")
-                .addParam("hospitalCode", "A00001")
-                .addParam("appointmentRecordId", "1559117986758R13209")
-                .post()
-                .compose(RxUtil.applyLifecycleLCESchedulers(this, this))
-                .subscribe(new BaseObserver<String>() {
-                    @Override
-                    public void onFail(ApiException exception) {
-                        ToastUtil.showShort(exception.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(String result) {
-                        HttpBaseResultVo resultVo = JSON.parseObject(result, HttpBaseResultVo.class);
-                        if (resultVo.code == 1 || resultVo.code == 200) {
-                            //取消成功
-                            Intent intent = new Intent(CancelAppointActivity.this, AppointOrCancleResultActivity.class);
-                            intent.putExtra("opType", 2);//取消预约操作
-                            startActivity(intent);
-                            CancelAppointActivity.this.finish();
-                        } else {
-                            ToastUtil.showShort("取消预约失败，请按原来预约时间进行检查");
-                        }
-                    }
-                });
+    private void gotoReAppointment() {
+        Intent intent = new Intent();
+        intent.setClass(this, ChooseAppointTimeActivity.class);
+        intent.putExtra("appointmentItem", mAppointVo)
+                .putExtra("isReAppoint", true);
+        startActivity(intent);
     }
+
+
 
 
 }

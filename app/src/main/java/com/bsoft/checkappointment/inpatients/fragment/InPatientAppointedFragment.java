@@ -1,4 +1,4 @@
-package com.bsoft.checkappointment.outpatients.fragment;
+package com.bsoft.checkappointment.inpatients.fragment;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.util.SparseArray;
 
 import com.alibaba.fastjson.JSON;
@@ -17,7 +18,7 @@ import com.bsoft.checkappointment.Const;
 import com.bsoft.checkappointment.MyApplication;
 import com.bsoft.checkappointment.R;
 import com.bsoft.checkappointment.common.CancelAppointActivity;
-import com.bsoft.checkappointment.common.PrepareReAppointActivity;
+import com.bsoft.checkappointment.common.ChooseAppointTimeActivity;
 import com.bsoft.checkappointment.event.GoToAppointmentEvent;
 import com.bsoft.checkappointment.model.PatientAppointmentVo;
 import com.bsoft.checkappointment.model.SignQueueVo;
@@ -52,7 +53,7 @@ import io.reactivex.functions.Function;
  * Description:
  * PS: Not easy to write code, please indicate.
  */
-public class AppointedFragment extends BaseLazyLoadFragment {
+public class InPatientAppointedFragment extends BaseLazyLoadFragment {
     private List<PatientAppointmentVo> mList = new ArrayList<>();
     private PatientAppointmentVo mSelectedAppointVo;
     private SparseArray<SignQueueVo> mSignQueueVoArray = new SparseArray<>();
@@ -63,7 +64,6 @@ public class AppointedFragment extends BaseLazyLoadFragment {
     private String mChangeAppointTimeLimit;  //改约的提前时间限制
     private String mCancelAppointTimeLimit; //提前取消的时间限制
     private boolean hasSignedAppointment;
-    private ArrayList<Disposable> timers = new ArrayList<>(1);
 
     @Override
     public int getContentViewId(@Nullable Bundle savedInstanceState) {
@@ -104,6 +104,7 @@ public class AppointedFragment extends BaseLazyLoadFragment {
                             .setText(R.id.appointment_time_tv, appointmentTime)
                             .setText(R.id.check_address_tv, checkAdress)
                             .setVisible(R.id.sign_sequence_no_ll, patientAppointmentVo.getSignInSign() == 1)
+                            .setVisible(R.id.pay_state_tv, false)
                             .setText(R.id.note_tv, noteStr);
                     //根据是否签到判断显示的内容， 签到之后所有按键都不显示
                     if (patientAppointmentVo.getSignInSign() == 1 && mSignQueueVoArray.get(position).getSerialNumber() != null) {
@@ -114,58 +115,11 @@ public class AppointedFragment extends BaseLazyLoadFragment {
                                 .setVisible(R.id.buttons, false);
                     } else {
                         long timeGapHour = DateUtil.getTimeGap(patientAppointmentVo.getCheckStartTime()) / (1000 * 60 * 60);
-                        holder.setVisible(R.id.appointment_pay_tv, patientAppointmentVo.getFeeStatus() == 0)
+                        holder.setVisible(R.id.appointment_pay_tv, false)
                                 .setVisible(R.id.appointment_sign_tv, mSignType.equals("2"))
                                 .setVisible(R.id.appointment_change_tv, true)
                                 .setVisible(R.id.appointment_cancel_tv, true);
                     }
-
-                    if (patientAppointmentVo.getFeeStatus() == 1) {
-                        holder.setText(R.id.pay_state_tv, "已支付");
-                    } else {
-                        //未支付设置倒计时显示
-                        final Long remainSeconds = patientAppointmentVo.getAutomaticCancellationRemainingSeconds();
-                        if (remainSeconds > 0) {
-                            Disposable timer = Observable.interval(0, 1, TimeUnit.SECONDS)
-                                    .map(new Function<Long, Integer>() {
-                                        @Override
-                                        public Integer apply(Long aLong) throws Exception {
-                                            return remainSeconds.intValue() - aLong.intValue();
-                                        }
-                                    })
-                                    .take(remainSeconds - 1)
-                                    .compose(RxUtil.applyLifecycleSchedulers(AppointedFragment.this, FragmentEvent.DESTROY))
-                                    .subscribe(new Consumer<Integer>() {
-                                        @Override
-                                        public void accept(Integer integer) throws Exception {
-                                            if (integer / 60 == 0 && integer % 60 == 0) {
-                                                holder.setText(R.id.pay_state_tv, "支付超时");
-                                                holder.setVisible(R.id.buttons, false);
-                                                return;
-                                            }
-                                            StringBuilder sb = new StringBuilder("剩余");
-                                            if (integer / 60 < 10) {
-                                                sb.append(0).append(integer / 60);
-                                            } else {
-                                                sb.append(integer / 60);
-                                            }
-                                            sb.append("分");
-                                            if (integer % 60 < 10) {
-                                                sb.append(0).append(integer % 60);
-                                            } else {
-                                                sb.append(integer % 60);
-                                            }
-                                            sb.append("秒");
-                                            holder.setText(R.id.pay_state_tv, sb.toString());
-                                        }
-                                    });
-                            timers.add(timer);
-                        } else {
-                            holder.setText(R.id.pay_state_tv, "支付超时");
-                            holder.setVisible(R.id.buttons, false);
-                        }
-                    }
-
                     //点击事件
                     holder.setOnClickListener(R.id.appointment_cancel_tv, v -> {
                         //如果在规定的可取消时间范围内则弹出取消对话框，显示取消的次数限制，否则提示用户不可取消
@@ -193,11 +147,11 @@ public class AppointedFragment extends BaseLazyLoadFragment {
                         mSelectedAppointVo = mList.get(holder.getAdapterPosition());
                         if (timeGapHour >= Long.parseLong(mChangeAppointTimeLimit)) {
                             //可以改约
-                            gotoPrepareAppointment();
+                            gotoReAppointment();
                         } else {
                             ToastUtil.showShort(new StringBuilder("距检查时间").append(mChangeAppointTimeLimit).append("小时内的预约不可更改").toString());
                         }
-                        gotoPrepareAppointment();
+                        gotoReAppointment();
                     });
                 }
             };
@@ -208,18 +162,12 @@ public class AppointedFragment extends BaseLazyLoadFragment {
 
     @Override
     protected void loadData() {
-        for (Disposable timer : timers) {
-            if (!timer.isDisposed()) {
-                timer.dispose();
-            }
-        }
-        timers.clear();
         hasSignedAppointment = false;
         HttpEnginer.newInstance()
                 .addUrl("auth/checkAppointment/getCheckAppointmentItem")
                 .addParam("hospitalCode", MyApplication.loginUserVo.getHospitalCode())
                 .addParam("patientType", 1)
-                .addParam("patientIdentityCardType", 1)
+                .addParam("patientIdentityCardType", 3)
                 .addParam("patientIdentityCardNumber", "37263819980909293X")
                 .addParam("appointmentSign", 1)
                 .post(new ResultConverter<List<PatientAppointmentVo>>() {
@@ -313,10 +261,11 @@ public class AppointedFragment extends BaseLazyLoadFragment {
         startActivity(intent);
     }
 
-    private void gotoPrepareAppointment() {
+    private void gotoReAppointment() {
         Intent intent = new Intent();
-        intent.setClass(getActivity(), PrepareReAppointActivity.class);
-        intent.putExtra("appointmentItem", mSelectedAppointVo);
+        intent.setClass(getActivity(), ChooseAppointTimeActivity.class);
+        intent.putExtra("appointmentItem", mSelectedAppointVo)
+                .putExtra("isReAppoint", true);
         startActivity(intent);
     }
 
@@ -327,7 +276,7 @@ public class AppointedFragment extends BaseLazyLoadFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRefreshEvent(GoToAppointmentEvent goToAppointmentEvent) {
-        if (goToAppointmentEvent == GoToAppointmentEvent.OUTPATIENT) {
+        if (goToAppointmentEvent == GoToAppointmentEvent.INPATIENT) {
             loadData();
         }
     }

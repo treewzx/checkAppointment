@@ -1,4 +1,4 @@
-package com.bsoft.checkappointment.outpatients.fragment;
+package com.bsoft.checkappointment.inpatients.fragment;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -39,23 +39,18 @@ import java.util.List;
  * Description:
  * PS: Not easy to write code, please indicate.
  */
-public class UnappointFragment extends BaseLazyLoadFragment {
+public class InPatientUnappointFragment extends BaseLazyLoadFragment {
 
     private List<PatientAppointmentVo> mList = new ArrayList<>();
     private PatientAppointmentVo mSelectedAppointVo;
     private CommonAdapter<PatientAppointmentVo> mAdapter;
-    private boolean isNeedPayFirst;//是否需要先收费后预约 ，1=需要
-    private String mPayTimeLimit; //预约后需要支付的时间限制
-
 
     @Override
     protected void loadData() {
-        mPayTimeLimit = Const.systemConfigMap.get("CA_notFeeAutoCancelTime");
-        isNeedPayFirst = "1".equals(Const.systemConfigMap.get("CA_appointmentIsFee"));
         HttpEnginer.newInstance()
                 .addUrl("auth/checkAppointment/getCheckAppointmentItem")
                 .addParam("hospitalCode", MyApplication.loginUserVo.getHospitalCode())
-                .addParam("patientType", 1)
+                .addParam("patientType", 3)
                 .addParam("patientIdentityCardType", 1)
                 .addParam("patientIdentityCardNumber", "37263819980909293X")
                 .addParam("appointmentSign", 0)
@@ -111,20 +106,14 @@ public class UnappointFragment extends BaseLazyLoadFragment {
                             .setText(R.id.uncheck_request_no_tv, requestNo)
                             .setText(R.id.patient_info_tv, patientInfo)
                             .setText(R.id.appointment_item_tv, appointmentItem)
-                            .setText(R.id.pay_state_tv, patientAppointmentVo.getFeeStatus() == 1 ? "已支付" : "未支付")
-                            .setVisible(R.id.unappoint_appoint_tv, !isNeedPayFirst || patientAppointmentVo.getFeeStatus() == 1)
-                            .setVisible(R.id.unappoint_pay_tv, patientAppointmentVo.getFeeStatus() == 0)
+                            .setVisible(R.id.pay_state_tv, false)
+                            .setVisible(R.id.unappoint_appoint_tv, true)
+                            .setVisible(R.id.unappoint_pay_tv, false)
                             .setText(R.id.note_tv, noteStr);
 
                     holder.setOnClickListener(R.id.unappoint_appoint_tv, v -> {
                         mSelectedAppointVo = mList.get(holder.getAdapterPosition());
-                        if (!isNeedPayFirst) {
-                            showAppointDailog();
-                        } else {
-                            gotoAppoint();
-                        }
-                    }).setOnClickListener(R.id.unappoint_pay_tv, v -> {
-                        ToastUtil.showShort("支付");
+                        gotoAppoint();
                     });
                 }
             };
@@ -140,26 +129,10 @@ public class UnappointFragment extends BaseLazyLoadFragment {
         startActivity(intent);
     }
 
-    private void showAppointDailog() {
-        Spanned payTimeLimit = Html.fromHtml(String.format((getString(R.string.pay_time_limit)), mPayTimeLimit));
-        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-        dialogBuilder.setCancelable(true)
-                .setContentView(R.layout.dialog_outpatients_appointment_note)
-                .setAnimations(R.style.dialog_from_bottom_anim)
-                .setText(R.id.pay_time_limit_tv, payTimeLimit.toString())
-                .setOnClickeListener(R.id.dialog_appoint_continue_tv, v -> {
-                    dialogBuilder.dismiss();
-                    gotoAppoint();
-                })
-                .setOnClickeListener(R.id.dialog_appoint_pay_tv, v -> {
-                    ToastUtil.showShort("立即支付");
-                    dialogBuilder.dismiss();
-                }).show();
-    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRefreshEvent(GoToAppointmentEvent goToAppointmentEvent) {
-        if (GoToAppointmentEvent.OUTPATIENT == goToAppointmentEvent) {
+        if (GoToAppointmentEvent.INPATIENT == goToAppointmentEvent) {
             loadData();
         }
     }
