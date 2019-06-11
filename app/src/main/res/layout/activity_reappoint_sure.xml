@@ -185,7 +185,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:text="前次预约时间"
+            android:text="本次预约时间"
             android:textSize="@dimen/sp_15" />
 
         <TextView
@@ -209,7 +209,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:text="前次检查地点"
+            android:text="本次检查地点"
             android:textSize="@dimen/sp_15" />
 
         <TextView

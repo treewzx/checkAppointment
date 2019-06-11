@@ -24,6 +24,7 @@ public abstract class BaseAppointOrCancleActivity extends BaseActivity {
     protected PatientAppointmentVo mAppointVo;
     private AppointTimeVo mAppointTimeVo;
     private boolean mIsCancleAppoint;
+    private boolean mIsReAppoint;
 
     private LinearLayout mPatientDepartmentll;
     private LinearLayout mPatientBedNumll;
@@ -68,6 +69,7 @@ public abstract class BaseAppointOrCancleActivity extends BaseActivity {
         mAppointVo = getIntent().getParcelableExtra("appointmentItem");
         mAppointTimeVo = getIntent().getParcelableExtra("appointTime");
         mIsCancleAppoint = getIntent().getBooleanExtra("isCancleAppoint", false);
+        mIsReAppoint = getIntent().getBooleanExtra("isReAppoint", false);
         onPreExcuteTask();
         if (mAppointVo.getPatientType() == 3) {
             mPatientDepartmentll.setVisibility(View.VISIBLE);
@@ -84,7 +86,7 @@ public abstract class BaseAppointOrCancleActivity extends BaseActivity {
         //mPatientBedNumTv.setText(mAppointVo.get);
         mPatientNoTv.setText(mAppointVo.getPatientNumber());
         mPatientCheckItemTv.setText(mAppointVo.getCheckItemName());
-        if (mIsCancleAppoint) {
+        if (mIsCancleAppoint || mIsReAppoint) {
             checkTime = new StringBuilder()
                     .append(DateUtil.getYMDHM(mAppointVo.getCheckStartTime()))
                     .append("-")

@@ -316,7 +316,8 @@ public class AppointedFragment extends BaseLazyLoadFragment {
     private void gotoPrepareAppointment() {
         Intent intent = new Intent();
         intent.setClass(getActivity(), PrepareReAppointActivity.class);
-        intent.putExtra("appointmentItem", mSelectedAppointVo);
+        intent.putExtra("appointmentItem", mSelectedAppointVo)
+                .putExtra("isReAppoint",true);
         startActivity(intent);
     }
 

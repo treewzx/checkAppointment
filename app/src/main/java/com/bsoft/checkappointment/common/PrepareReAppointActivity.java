@@ -33,7 +33,7 @@ public class PrepareReAppointActivity extends BaseAppointOrCancleActivity {
     public void onPreExcuteTask() {
         super.onPreExcuteTask();
         mCancelChangeAppointCountLimit = Const.systemConfigMap.get("CA_updateTimes");
-        getCancledCount();
+        getReAppointCount();
     }
 
     @Override
@@ -48,10 +48,10 @@ public class PrepareReAppointActivity extends BaseAppointOrCancleActivity {
 
     @Override
     protected void excuteTask() {
-        showCancleDialog();
+        showReAppointDialog();
     }
 
-    private void getCancledCount() {
+    private void getReAppointCount() {
         HttpEnginer.newInstance()
                 .addUrl("auth/checkAppointment/getAppointmentRecordUpdateTimes")
                 .addParam("hospitalCode", MyApplication.loginUserVo.getHospitalCode())
@@ -72,7 +72,7 @@ public class PrepareReAppointActivity extends BaseAppointOrCancleActivity {
                 });
     }
 
-    private void showCancleDialog() {
+    private void showReAppointDialog() {
         String noteStr = null;
         if (Integer.parseInt(mCancelChangeAppointCountLimit) > mReAppointCount) {
             if (Integer.parseInt(mCancelChangeAppointCountLimit) > 0) {

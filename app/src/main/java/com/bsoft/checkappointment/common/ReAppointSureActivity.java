@@ -65,10 +65,10 @@ public class ReAppointSureActivity extends BaseActivity {
         mPatientDepartmentTv = findViewById(R.id.patient_department_tv);
         mPatientBedNumTv = findViewById(R.id.patient_bed_num_tv);
         mPatientCheckItemTv = findViewById(R.id.patient_check_item_tv);
-        mPreviousCheckTimeTv = findViewById(R.id.previous_appoint_location_tv);
+        mPreviousCheckTimeTv = findViewById(R.id.previous_appoint_time_tv);
+        mPreviousCheckLocationTv = findViewById(R.id.previous_appoint_location_tv);
         mNewCheckTimeTv = findViewById(R.id.new_appoint_time_tv);
         mNewCheckLocationTv = findViewById(R.id.new_appoint_location_tv);
-        mPreviousCheckLocationTv = findViewById(R.id.patient_check_location_tv);
         mPatientCheckNoteTv = findViewById(R.id.check_note_tv);
         mAppointExcuteTv = findViewById(R.id.confirm_or_cancel_appoint_tv);
     }
