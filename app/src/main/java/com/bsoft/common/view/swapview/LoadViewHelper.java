@@ -118,7 +118,7 @@ public class LoadViewHelper {
             msgTv.setText("无网络");
         }
         if (emptyIv != null) {
-            emptyIv.setImageResource(R.drawable.base_bg_no_net);
+            emptyIv.setImageResource(R.drawable.recyclerview_bg_no_net);
         }
         mHelper.showLayout(emptyLayout);
     }

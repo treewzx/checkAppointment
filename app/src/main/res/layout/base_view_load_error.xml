@@ -10,7 +10,7 @@
     <ImageView
         android:layout_width="@dimen/dp_160"
         android:layout_height="@dimen/dp_160"
-        android:src="@drawable/base_bg_error" />
+        android:src="@drawable/recyclerview_bg_error" />
 
     <TextView
         android:id="@+id/msg_tv"

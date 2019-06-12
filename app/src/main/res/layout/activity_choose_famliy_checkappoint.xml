@@ -20,7 +20,7 @@
         <ImageView
             android:layout_width="@dimen/dp_24"
             android:layout_height="@dimen/dp_24"
-            android:src="@drawable/common_icon_patient" />
+            android:src="@drawable/icon_patient" />
 
         <TextView
             android:id="@+id/patient_name_tv"
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dp_8"
-            android:drawableRight="@drawable/common_arrow_right"
+            android:drawableRight="@drawable/arrow_right"
             android:gravity="end"
             android:text="切换就诊人"
             android:textColor="@android:color/darker_gray"
