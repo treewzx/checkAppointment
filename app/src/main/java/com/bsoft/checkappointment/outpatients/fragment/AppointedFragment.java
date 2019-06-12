@@ -298,7 +298,7 @@ public class AppointedFragment extends BaseLazyLoadFragment {
                             ToastUtil.showShort("签到成功");
                             loadData();
                         } else {
-                            ToastUtil.showShort(resultVo.msg);
+                            ToastUtil.showShort(resultVo.message);
                         }
                     }
                 });

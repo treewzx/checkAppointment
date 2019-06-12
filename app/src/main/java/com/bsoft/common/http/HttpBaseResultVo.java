@@ -10,7 +10,7 @@ package com.bsoft.common.http;
 public class HttpBaseResultVo {
     public int code;
 
-    public String msg;
+    public String message;
 
     public String data;
 }

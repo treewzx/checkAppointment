@@ -4,44 +4,33 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.text.format.DateUtils;
-import android.util.Log;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bsoft.baselib.http.HttpEnginer;
-import com.bsoft.baselib.http.HttpEnginerConfig;
 import com.bsoft.baselib.http.exception.ApiException;
-import com.bsoft.baselib.http.httpcallback.HttpCallback;
 import com.bsoft.baselib.utils.RxUtil;
 import com.bsoft.checkappointment.CheckAppointConfig;
 import com.bsoft.checkappointment.Const;
 import com.bsoft.checkappointment.MyApplication;
 import com.bsoft.checkappointment.R;
-import com.bsoft.checkappointment.callback.OnSelectPatientListener;
 import com.bsoft.checkappointment.callback.SelectPatientCallback;
 import com.bsoft.checkappointment.inpatients.activity.InPatientAppointActivity;
 import com.bsoft.checkappointment.model.PatientInfo;
 import com.bsoft.checkappointment.model.SystemConfigVo;
-import com.bsoft.checkappointment.operationsearch.OperationSearchActivity;
 import com.bsoft.checkappointment.outpatients.activity.OutPatientsAppointActivity;
 import com.bsoft.common.activity.BaseActivity;
 import com.bsoft.common.http.BaseObserver;
 import com.bsoft.common.http.ResultConverter;
 import com.bsoft.common.model.LoginUserVo;
-import com.bsoft.common.utils.DateUtil;
 import com.bsoft.common.utils.DeviceUtil;
 import com.bsoft.common.utils.MD5;
 import com.bsoft.common.utils.ToastUtil;
+import com.bsoft.dischargemedication.DischargeMedicationActivity;
+import com.bsoft.operationsearch.OperationSearchHomeActivity;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 
@@ -135,7 +124,7 @@ public class ChooseFamliyActivity extends BaseActivity {
             startActivity(new Intent(this, InPatientAppointActivity.class));
         });
         findViewById(R.id.choose_famliy_ll).setOnClickListener(v -> {
-            CheckAppointConfig.getInstance()
+           /* CheckAppointConfig.getInstance()
                     .getOnSelectPatientListener()
                     .onSelectPatient(new SelectPatientCallback() {
                         @Override
@@ -143,13 +132,13 @@ public class ChooseFamliyActivity extends BaseActivity {
                             ChooseFamliyActivity.this.mPatientInfo = patientInfo;
                             mPatientNameTv.setText(patientInfo.getPatientName());
                         }
-                    });
+                    });*/
         });
         findViewById(R.id.operation_search).setOnClickListener(v -> {
-            startActivity(new Intent(this, OperationSearchActivity.class));
+            startActivity(new Intent(this, OperationSearchHomeActivity.class));
         });
         findViewById(R.id.discharge_medication_tv).setOnClickListener(v -> {
-            startActivity(new Intent(this, OperationSearchActivity.class));
+            startActivity(new Intent(this, DischargeMedicationActivity.class));
         });
 
 

@@ -19,6 +19,7 @@ import com.bsoft.checkappointment.MyApplication;
 import com.bsoft.checkappointment.R;
 import com.bsoft.checkappointment.common.CancelAppointActivity;
 import com.bsoft.checkappointment.common.ChooseAppointTimeActivity;
+import com.bsoft.checkappointment.common.PrepareReAppointActivity;
 import com.bsoft.checkappointment.event.GoToAppointmentEvent;
 import com.bsoft.checkappointment.model.PatientAppointmentVo;
 import com.bsoft.checkappointment.model.SignQueueVo;
@@ -147,11 +148,11 @@ public class InPatientAppointedFragment extends BaseLazyLoadFragment {
                         mSelectedAppointVo = mList.get(holder.getAdapterPosition());
                         if (timeGapHour >= Long.parseLong(mChangeAppointTimeLimit)) {
                             //可以改约
-                            gotoReAppointment();
+                            gotoPrepareAppointment();
                         } else {
                             ToastUtil.showShort(new StringBuilder("距检查时间").append(mChangeAppointTimeLimit).append("小时内的预约不可更改").toString());
                         }
-                        gotoReAppointment();
+                        gotoPrepareAppointment();
                     });
                 }
             };
@@ -166,7 +167,7 @@ public class InPatientAppointedFragment extends BaseLazyLoadFragment {
         HttpEnginer.newInstance()
                 .addUrl("auth/checkAppointment/getCheckAppointmentItem")
                 .addParam("hospitalCode", MyApplication.loginUserVo.getHospitalCode())
-                .addParam("patientType", 1)
+                .addParam("patientType", 3)
                 .addParam("patientIdentityCardType", 3)
                 .addParam("patientIdentityCardNumber", "37263819980909293X")
                 .addParam("appointmentSign", 1)
@@ -246,7 +247,7 @@ public class InPatientAppointedFragment extends BaseLazyLoadFragment {
                             ToastUtil.showShort("签到成功");
                             loadData();
                         } else {
-                            ToastUtil.showShort(resultVo.msg);
+                            ToastUtil.showShort(resultVo.message);
                         }
                     }
                 });
@@ -261,14 +262,13 @@ public class InPatientAppointedFragment extends BaseLazyLoadFragment {
         startActivity(intent);
     }
 
-    private void gotoReAppointment() {
+    private void gotoPrepareAppointment() {
         Intent intent = new Intent();
-        intent.setClass(getActivity(), ChooseAppointTimeActivity.class);
+        intent.setClass(getActivity(), PrepareReAppointActivity.class);
         intent.putExtra("appointmentItem", mSelectedAppointVo)
-                .putExtra("isReAppoint", true);
+                .putExtra("isReAppoint",true);
         startActivity(intent);
     }
-
     @Override
     public boolean useEventBus() {
         return true;

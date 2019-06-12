@@ -1,4 +1,4 @@
-package com.bsoft.checkappointment.operationsearch.fragment;
+package com.bsoft.operationsearch.fragment;
 
 import com.bsoft.common.fragment.BaseLazyLoadFragment;
 

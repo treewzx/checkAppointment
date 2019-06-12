@@ -26,8 +26,7 @@ public class ResultConverter<T> implements IConverter<T> {
            T t = (T) JSON.parseObject(resultVo.data,type);
            return t;
        }else {
-           throw new ParseException(resultVo.msg,0);
+           throw new ParseException(resultVo.message,0);
        }
-
     }
 }

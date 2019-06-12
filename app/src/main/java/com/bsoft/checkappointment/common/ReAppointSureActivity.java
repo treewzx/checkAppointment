@@ -132,12 +132,12 @@ public class ReAppointSureActivity extends BaseActivity {
                 .addParam("checkItemName", "MRI")
                 .addParam("appointmentDate", "2019-06-01")
                 .addParam("appointmentQueueCode", "A01")
-                .addParam("numberStartTime", "2019-06-01 09:00:00")
-                .addParam("numberEndTime", "2019-06-01 10:00:00")
-                .addParam("appointmentRecordId", "1559117986758R13209")
+                .addParam("numberStartTime", mAppointTimeVo.getNumberStartTime())
+                .addParam("numberEndTime",mAppointTimeVo.getNumberEndTime())
+                .addParam("appointmentRecordId", mPreviousAppointVo.getAppointmentRecordId())
                 .post()
                 .compose(RxUtil.applyLifecycleLCESchedulers(this, this))
-                .subscribe(new BaseObserver<String>() {
+                    .subscribe(new BaseObserver<String>() {
                     @Override
                     public void onFail(ApiException exception) {
                         ToastUtil.showShort(exception.getMessage());
@@ -152,7 +152,7 @@ public class ReAppointSureActivity extends BaseActivity {
                             startActivity(intent);
                             ReAppointSureActivity.this.finish();
                         } else {
-                            ToastUtil.showShort(resultVo.msg);
+                            ToastUtil.showShort(resultVo.message);
                         }
                     }
                 });

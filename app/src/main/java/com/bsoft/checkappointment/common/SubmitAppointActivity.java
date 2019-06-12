@@ -74,7 +74,7 @@ public class SubmitAppointActivity extends BaseAppointOrCancleActivity {
                             startActivity(intent);
                             SubmitAppointActivity.this.finish();
                         } else {
-                            ToastUtil.showShort(resultVo.msg);
+                            ToastUtil.showShort(resultVo.message);
                         }
                     }
                 });

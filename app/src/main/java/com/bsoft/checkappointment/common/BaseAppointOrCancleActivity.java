@@ -92,16 +92,16 @@ public abstract class BaseAppointOrCancleActivity extends BaseActivity {
                     .append("-")
                     .append(DateUtil.getHM(mAppointVo.getCheckEndTime()))
                     .toString();
+            mPatientCheckLocationTv.setText(mAppointVo.getCheckAddress());
         } else {
             checkTime = new StringBuilder()
                     .append(DateUtil.getYMDHM(mAppointTimeVo.getNumberStartTime()))
                     .append("-")
                     .append(DateUtil.getHM(mAppointTimeVo.getNumberEndTime()))
                     .toString();
+            mPatientCheckLocationTv.setText(mAppointTimeVo.getCheckAddress());
         }
-
         mPatientCheckTimeTv.setText(checkTime);
-        mPatientCheckLocationTv.setText(mAppointVo.getCheckAddress());
         mPatientCheckNoteTv.setText(mAppointVo.getMattersNeedingAttention());
 
         mAppointExcuteTv.setOnClickListener(v -> {

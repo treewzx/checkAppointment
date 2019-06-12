@@ -4,6 +4,9 @@
     package="com.bsoft.checkappointment">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -45,13 +48,16 @@
             android:name=".common.ReAppointSureActivity"
             android:theme="@style/MyAppTheme" />
         <activity
-            android:name=".operationsearch.OperationSearchActivity"
+            android:name="com.bsoft.operationsearch.OperationSearchHomeActivity"
             android:theme="@style/MyAppTheme" />
         <activity
-            android:name=".operationsearch.OperationDetailActivity"
+            android:name="com.bsoft.operationsearch.OperationDetailActivity"
             android:theme="@style/MyAppTheme" />
         <activity
             android:name=".common.PrepareReAppointActivity"
+            android:theme="@style/MyAppTheme" />
+        <activity
+            android:name="com.bsoft.dischargemedication.DischargeMedicationActivity"
             android:theme="@style/MyAppTheme" />
     </application>
 

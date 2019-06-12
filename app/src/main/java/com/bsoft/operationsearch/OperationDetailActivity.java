@@ -1,4 +1,4 @@
-package com.bsoft.checkappointment.operationsearch;
+package com.bsoft.operationsearch;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,12 +10,9 @@ import com.bsoft.baselib.utils.RxUtil;
 import com.bsoft.checkappointment.MyApplication;
 import com.bsoft.checkappointment.R;
 import com.bsoft.checkappointment.model.OperationDetailVo;
-import com.bsoft.checkappointment.model.OperationVo;
 import com.bsoft.common.activity.BaseActivity;
 import com.bsoft.common.http.BaseObserver;
 import com.bsoft.common.http.ResultConverter;
-
-import java.util.List;
 
 /**
  * Author by wangzhaox,

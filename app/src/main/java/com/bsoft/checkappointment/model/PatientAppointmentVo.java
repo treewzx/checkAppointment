@@ -53,6 +53,33 @@ public class PatientAppointmentVo implements Parcelable {
     private int patientType;
     private String patientNumber;
     private String checkRequestNumber;
+    private String checkItemCode;
+    private String checkItemName;
+    private int appointmentSign;
+    private int signInSign;
+    private int executionSign;
+    private String appointmentRecordId;
+    private String appointmentDateTime;
+    private String automaticCancellationTime;
+    private long automaticCancellationRemainingSeconds;
+    private String checkStartTime;
+    private String checkEndTime;
+    private String appointmentHospitalCode;
+    private String appointmentHospitalName;
+    private String appointmentDepartmentCode;
+    private String appointmentDepartmentName;
+    private String appointmentQueueCode;
+    private String appointmentQueueName;
+    private String appointmentSequenceNumber;
+    private String checkAddress;
+    private String mattersNeedingAttention;
+    private boolean emptyStomach;
+    private boolean holdBackUrine;
+    private int emergencySign;
+    private int feeStatus;
+    private String examCode;
+    private int printCount;
+    private String bedNumber;
 
     protected PatientAppointmentVo(Parcel in) {
         patientName = in.readString();
@@ -398,33 +425,7 @@ public class PatientAppointmentVo implements Parcelable {
         this.bedNumber = bedNumber;
     }
 
-    private String checkItemCode;
-    private String checkItemName;
-    private int appointmentSign;
-    private int signInSign;
-    private int executionSign;
-    private String appointmentRecordId;
-    private String appointmentDateTime;
-    private String automaticCancellationTime;
-    private long automaticCancellationRemainingSeconds;
-    private String checkStartTime;
-    private String checkEndTime;
-    private String appointmentHospitalCode;
-    private String appointmentHospitalName;
-    private String appointmentDepartmentCode;
-    private String appointmentDepartmentName;
-    private String appointmentQueueCode;
-    private String appointmentQueueName;
-    private String appointmentSequenceNumber;
-    private String checkAddress;
-    private String mattersNeedingAttention;
-    private boolean emptyStomach;
-    private boolean holdBackUrine;
-    private int emergencySign;
-    private int feeStatus;
-    private String examCode;
-    private int printCount;
-    private String bedNumber;
+
 
     public PatientAppointmentVo() {
 

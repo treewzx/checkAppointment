@@ -29,12 +29,14 @@ public class AppointTimeVo implements Parcelable {
     private boolean defaultSign;
     private int totalNumberCount;
     private int remainNumberCount;
+    private String checkAddress;
 
     public AppointTimeVo() {
 
     }
 
     protected AppointTimeVo(Parcel in) {
+        isPreviousSelected = in.readByte() != 0;
         numberStartTime = in.readString();
         numberEndTime = in.readString();
         appointmentQueueCode = in.readString();
@@ -42,11 +44,12 @@ public class AppointTimeVo implements Parcelable {
         defaultSign = in.readByte() != 0;
         totalNumberCount = in.readInt();
         remainNumberCount = in.readInt();
-        isPreviousSelected = in.readByte() != 0;
+        checkAddress = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (isPreviousSelected ? 1 : 0));
         dest.writeString(numberStartTime);
         dest.writeString(numberEndTime);
         dest.writeString(appointmentQueueCode);
@@ -54,7 +57,7 @@ public class AppointTimeVo implements Parcelable {
         dest.writeByte((byte) (defaultSign ? 1 : 0));
         dest.writeInt(totalNumberCount);
         dest.writeInt(remainNumberCount);
-        dest.writeByte((byte) (isPreviousSelected ? 1 : 0));
+        dest.writeString(checkAddress);
     }
 
     @Override
@@ -78,10 +81,9 @@ public class AppointTimeVo implements Parcelable {
         return isPreviousSelected;
     }
 
-    public void setPreviousSelected(boolean selected) {
-        isPreviousSelected = selected;
+    public void setPreviousSelected(boolean previousSelected) {
+        isPreviousSelected = previousSelected;
     }
-
 
     public String getNumberStartTime() {
         return numberStartTime;
@@ -138,4 +140,15 @@ public class AppointTimeVo implements Parcelable {
     public void setRemainNumberCount(int remainNumberCount) {
         this.remainNumberCount = remainNumberCount;
     }
+
+    public String getCheckAddress() {
+        return checkAddress;
+    }
+
+    public void setCheckAddress(String checkAddress) {
+        this.checkAddress = checkAddress;
+    }
+
+
+
 }
